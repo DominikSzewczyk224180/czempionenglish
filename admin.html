@@ -31,40 +31,69 @@
 
 <!-- Panel -->
 <div id="panelView" class="admin-wrap" style="display:none">
-  <div class="admin-grid">
 
-    <div class="admin-card">
+  <!-- BAZA WIEDZY -->
+  <section class="admin-section">
+    <div class="admin-section-head">
+      <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 5a2 2 0 012-2h12a1 1 0 011 1v14a1 1 0 01-1 1H6a2 2 0 01-2-2V5z"/><path d="M4 18a2 2 0 012-2h13"/><path d="M9 7h6"/></svg></span>
       <h2>Baza wiedzy</h2>
-      <p class="hint">Dodaj materiał. Pojawi się na stronie Baza wiedzy.</p>
-      <div class="admin-field"><label>Tytuł</label><input id="kbTitle" class="admin-input" type="text" placeholder="np. Czasy bez wkuwania"></div>
-      <div class="admin-field"><label>Opis</label><textarea id="kbDesc" class="admin-textarea" placeholder="Krótki opis materiału"></textarea></div>
-      <div class="admin-field"><label>Kategoria</label>
-        <select id="kbTag" class="admin-select"><option>PDF</option><option>Wideo</option><option>Ćwiczenia</option><option>Audio</option><option>Inne</option></select>
+      <span class="admin-count" id="kbCount">0 materiałów</span>
+    </div>
+    <div class="admin-cols">
+      <div>
+        <div class="admin-col-label" id="kbFormLabel">Dodaj materiał</div>
+        <div class="admin-editing-note" id="kbEditNote">Edytujesz materiał</div>
+        <div class="admin-field"><label>Tytuł</label><input id="kbTitle" class="admin-input" type="text" placeholder="np. Czasy bez wkuwania"></div>
+        <div class="admin-field"><label>Opis</label><textarea id="kbDesc" class="admin-textarea" placeholder="Krótki opis materiału"></textarea></div>
+        <div class="admin-field"><label>Kategoria</label>
+          <select id="kbTag" class="admin-select"><option>PDF</option><option>Wideo</option><option>Ćwiczenia</option><option>Audio</option><option>Inne</option></select>
+        </div>
+        <div class="admin-field"><label>Link (opcjonalnie)</label><input id="kbLink" class="admin-input" type="url" placeholder="https://..."></div>
+        <button class="cta-primary full" id="kbSubmit" onclick="saveKb()">Dodaj materiał</button>
+        <button class="admin-cancel" id="kbCancel" style="display:none" onclick="cancelKb()">Anuluj edycję</button>
       </div>
-      <div class="admin-field"><label>Link (opcjonalnie)</label><input id="kbLink" class="admin-input" type="url" placeholder="https://..."></div>
-      <button class="cta-primary full" onclick="addKb()">Dodaj materiał</button>
-      <ul class="admin-list" id="kbList"></ul>
+      <div>
+        <div class="admin-col-label">W bazie wiedzy</div>
+        <ul class="admin-list" id="kbList"></ul>
+      </div>
     </div>
+  </section>
 
-    <div class="admin-card">
+  <!-- SKLEP -->
+  <section class="admin-section">
+    <div class="admin-section-head">
+      <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 6h15l-1.5 9h-12z"/><path d="M6 6L5 3H3"/><circle cx="9" cy="20" r="1.4"/><circle cx="18" cy="20" r="1.4"/></svg></span>
       <h2>Sklep</h2>
-      <p class="hint">Dodaj produkt. Pojawi się na stronie Sklep.</p>
-      <div class="admin-field"><label>Tytuł</label><input id="pTitle" class="admin-input" type="text" placeholder="np. E-book: Gramatyka, która ma sens"></div>
-      <div class="admin-field"><label>Opis</label><textarea id="pDesc" class="admin-textarea" placeholder="Krótki opis produktu"></textarea></div>
-      <div class="admin-field"><label>Cena</label><input id="pPrice" class="admin-input" type="text" placeholder="np. 49 zł"></div>
-      <div class="admin-field"><label>Kategoria</label><input id="pTag" class="admin-input" type="text" placeholder="np. E-book"></div>
-      <div class="admin-field"><label>Zdjęcie (URL, opcjonalnie)</label><input id="pImg" class="admin-input" type="url" placeholder="https://..."></div>
-      <button class="cta-primary full" onclick="addProduct()">Dodaj produkt</button>
-      <ul class="admin-list" id="pList"></ul>
+      <span class="admin-count" id="pCount">0 produktów</span>
     </div>
+    <div class="admin-cols">
+      <div>
+        <div class="admin-col-label" id="pFormLabel">Dodaj produkt</div>
+        <div class="admin-editing-note" id="pEditNote">Edytujesz produkt</div>
+        <div class="admin-field"><label>Tytuł</label><input id="pTitle" class="admin-input" type="text" placeholder="np. E-book: Gramatyka, która ma sens"></div>
+        <div class="admin-field"><label>Opis</label><textarea id="pDesc" class="admin-textarea" placeholder="Krótki opis produktu"></textarea></div>
+        <div class="admin-field"><label>Cena</label><input id="pPrice" class="admin-input" type="text" placeholder="np. 49 zł"></div>
+        <div class="admin-field"><label>Kategoria</label><input id="pTag" class="admin-input" type="text" placeholder="np. E-book"></div>
+        <div class="admin-field"><label>Zdjęcie (URL, opcjonalnie)</label><input id="pImg" class="admin-input" type="url" placeholder="https://..."></div>
+        <button class="cta-primary full" id="pSubmit" onclick="saveProduct()">Dodaj produkt</button>
+        <button class="admin-cancel" id="pCancel" style="display:none" onclick="cancelProduct()">Anuluj edycję</button>
+      </div>
+      <div>
+        <div class="admin-col-label">W sklepie</div>
+        <ul class="admin-list" id="pList"></ul>
+      </div>
+    </div>
+  </section>
 
-  </div>
-  <p class="admin-note">Dane zapisują się lokalnie w tej przeglądarce (wersja demonstracyjna). Docelowo trzyma je backend, a logowanie będzie prawdziwe.</p>
+  <p class="admin-note">Dane zapisują się lokalnie w tej przeglądarce (wersja demonstracyjna) i pojawiają się na stronach Baza wiedzy oraz Sklep. Docelowo trzyma je backend, a logowanie będzie prawdziwe.</p>
 </div>
 
 <script>
   const KB_KEY = "cze_kb";
   const SHOP_KEY = "cze_shop";
+  let editKb = null;
+  let editShop = null;
+
   const S = {
     read: (k) => { try { return JSON.parse(localStorage.getItem(k) || "[]"); } catch (e) { return []; } },
     write: (k, a) => {
@@ -74,8 +103,17 @@
   };
   const esc = (s) => String(s == null ? "" : s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
   const val = (id) => document.getElementById(id).value.trim();
-  const clear = (...ids) => ids.forEach((id) => (document.getElementById(id).value = ""));
+  const set = (id, v) => (document.getElementById(id).value = v == null ? "" : v);
+  const show = (id, on) => (document.getElementById(id).style.display = on ? "block" : "none");
+  const cut = (s, n) => (s && s.length > n ? s.slice(0, n) + "…" : (s || ""));
+  const plural = (n, one, few, many) => {
+    const m10 = n % 10, m100 = n % 100;
+    if (n === 1) return one;
+    if (m10 >= 2 && m10 <= 4 && !(m100 >= 12 && m100 <= 14)) return few;
+    return many;
+  };
 
+  /* logowanie */
   function adminLogin() {
     if (document.getElementById("pw").value === "12345") {
       try { localStorage.setItem("cze_admin", "1"); } catch (e) {}
@@ -96,44 +134,94 @@
     renderProducts();
   }
 
-  function addKb() {
+  /* BAZA WIEDZY */
+  function saveKb() {
     const title = val("kbTitle");
-    if (!title) return;
+    if (!title) { document.getElementById("kbTitle").focus(); return; }
+    const item = { title, desc: val("kbDesc"), tag: document.getElementById("kbTag").value, link: val("kbLink") };
     const arr = S.read(KB_KEY);
-    arr.push({ title, desc: val("kbDesc"), tag: document.getElementById("kbTag").value, link: val("kbLink") });
+    if (editKb === null) arr.push(item); else arr[editKb] = item;
     S.write(KB_KEY, arr);
-    clear("kbTitle", "kbDesc", "kbLink");
+    cancelKb();
     renderKb();
   }
-  function addProduct() {
-    const title = val("pTitle");
-    if (!title) return;
-    const arr = S.read(SHOP_KEY);
-    arr.push({ title, desc: val("pDesc"), price: val("pPrice"), tag: val("pTag"), img: val("pImg") });
-    S.write(SHOP_KEY, arr);
-    clear("pTitle", "pDesc", "pPrice", "pTag", "pImg");
-    renderProducts();
+  function editKbItem(i) {
+    const it = S.read(KB_KEY)[i]; if (!it) return;
+    editKb = i;
+    set("kbTitle", it.title); set("kbDesc", it.desc); set("kbLink", it.link);
+    document.getElementById("kbTag").value = it.tag || "PDF";
+    document.getElementById("kbSubmit").textContent = "Zapisz zmiany";
+    document.getElementById("kbFormLabel").textContent = "Edytuj materiał";
+    document.getElementById("kbEditNote").style.display = "flex";
+    show("kbCancel", true);
+    document.getElementById("kbTitle").focus();
   }
-  function delItem(key, idx) {
-    const arr = S.read(key);
-    arr.splice(idx, 1);
-    S.write(key, arr);
-    key === KB_KEY ? renderKb() : renderProducts();
+  function cancelKb() {
+    editKb = null;
+    set("kbTitle", ""); set("kbDesc", ""); set("kbLink", "");
+    document.getElementById("kbTag").value = "PDF";
+    document.getElementById("kbSubmit").textContent = "Dodaj materiał";
+    document.getElementById("kbFormLabel").textContent = "Dodaj materiał";
+    document.getElementById("kbEditNote").style.display = "none";
+    show("kbCancel", false);
+  }
+  function delKb(i) {
+    const arr = S.read(KB_KEY); arr.splice(i, 1); S.write(KB_KEY, arr);
+    if (editKb === i) cancelKb();
+    renderKb();
+  }
+  function renderKb() {
+    const arr = S.read(KB_KEY);
+    document.getElementById("kbCount").textContent = arr.length + " " + plural(arr.length, "materiał", "materiały", "materiałów");
+    document.getElementById("kbList").innerHTML = arr.length
+      ? arr.map((it, i) =>
+          `<li class="admin-item"><div><div class="ai-main">${esc(it.title)}</div><div class="ai-sub">${esc(it.tag || "")}</div>${it.desc ? `<div class="ai-desc">${esc(cut(it.desc, 90))}</div>` : ""}</div><div class="admin-actions"><button class="admin-edit" onclick="editKbItem(${i})">Edytuj</button><button class="admin-del" onclick="delKb(${i})">Usuń</button></div></li>`
+        ).join("")
+      : '<li class="admin-empty">Brak materiałów. Dodaj pierwszy po lewej.</li>';
   }
 
-  function renderKb() {
-    const ul = document.getElementById("kbList");
-    const arr = S.read(KB_KEY);
-    ul.innerHTML = arr.length
-      ? arr.map((it, i) => `<li class="admin-item"><div><div class="ai-main">${esc(it.title)}</div><div class="ai-sub">${esc(it.tag || "")}</div></div><button class="admin-del" onclick="delItem('${KB_KEY}',${i})">Usuń</button></li>`).join("")
-      : '<li class="admin-empty">Brak materiałów. Dodaj pierwszy powyżej.</li>';
+  /* SKLEP */
+  function saveProduct() {
+    const title = val("pTitle");
+    if (!title) { document.getElementById("pTitle").focus(); return; }
+    const item = { title, desc: val("pDesc"), price: val("pPrice"), tag: val("pTag"), img: val("pImg") };
+    const arr = S.read(SHOP_KEY);
+    if (editShop === null) arr.push(item); else arr[editShop] = item;
+    S.write(SHOP_KEY, arr);
+    cancelProduct();
+    renderProducts();
+  }
+  function editProductItem(i) {
+    const it = S.read(SHOP_KEY)[i]; if (!it) return;
+    editShop = i;
+    set("pTitle", it.title); set("pDesc", it.desc); set("pPrice", it.price); set("pTag", it.tag); set("pImg", it.img);
+    document.getElementById("pSubmit").textContent = "Zapisz zmiany";
+    document.getElementById("pFormLabel").textContent = "Edytuj produkt";
+    document.getElementById("pEditNote").style.display = "flex";
+    show("pCancel", true);
+    document.getElementById("pTitle").focus();
+  }
+  function cancelProduct() {
+    editShop = null;
+    set("pTitle", ""); set("pDesc", ""); set("pPrice", ""); set("pTag", ""); set("pImg", "");
+    document.getElementById("pSubmit").textContent = "Dodaj produkt";
+    document.getElementById("pFormLabel").textContent = "Dodaj produkt";
+    document.getElementById("pEditNote").style.display = "none";
+    show("pCancel", false);
+  }
+  function delProduct(i) {
+    const arr = S.read(SHOP_KEY); arr.splice(i, 1); S.write(SHOP_KEY, arr);
+    if (editShop === i) cancelProduct();
+    renderProducts();
   }
   function renderProducts() {
-    const ul = document.getElementById("pList");
     const arr = S.read(SHOP_KEY);
-    ul.innerHTML = arr.length
-      ? arr.map((it, i) => `<li class="admin-item"><div><div class="ai-main">${esc(it.title)}</div><div class="ai-sub">${esc(it.tag || "")} ${esc(it.price || "")}</div></div><button class="admin-del" onclick="delItem('${SHOP_KEY}',${i})">Usuń</button></li>`).join("")
-      : '<li class="admin-empty">Brak produktów. Dodaj pierwszy powyżej.</li>';
+    document.getElementById("pCount").textContent = arr.length + " " + plural(arr.length, "produkt", "produkty", "produktów");
+    document.getElementById("pList").innerHTML = arr.length
+      ? arr.map((it, i) =>
+          `<li class="admin-item"><div><div class="ai-main">${esc(it.title)}</div><div class="ai-sub">${esc(it.tag || "")}${it.price ? " · " + esc(it.price) : ""}</div>${it.desc ? `<div class="ai-desc">${esc(cut(it.desc, 90))}</div>` : ""}</div><div class="admin-actions"><button class="admin-edit" onclick="editProductItem(${i})">Edytuj</button><button class="admin-del" onclick="delProduct(${i})">Usuń</button></div></li>`
+        ).join("")
+      : '<li class="admin-empty">Brak produktów. Dodaj pierwszy po lewej.</li>';
   }
 
   try { if (localStorage.getItem("cze_admin") === "1") showPanel(); } catch (e) {}
