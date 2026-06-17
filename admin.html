@@ -85,17 +85,33 @@
     </div>
   </section>
 
-  <p class="admin-note">Dane zapisują się lokalnie w tej przeglądarce (wersja demonstracyjna) i pojawiają się na stronach Baza wiedzy oraz Sklep. Docelowo trzyma je backend, a logowanie będzie prawdziwe.</p>
+  <p class="admin-note">Treści startowe są już wczytane. Dane zapisują się lokalnie w tej przeglądarce (wersja demonstracyjna) i pojawiają się na stronach Baza wiedzy oraz Sklep. Docelowo trzyma je backend, a logowanie będzie prawdziwe.</p>
 </div>
 
 <script>
   const KB_KEY = "cze_kb";
   const SHOP_KEY = "cze_shop";
+  const SEED_FLAG = "cze_seeded";
   let editKb = null;
   let editShop = null;
 
+  /* Treści startowe (te same co na stronie) */
+  const KB_DEFAULTS = [
+    { tag: "PDF", title: "5 powodów, dlaczego Twój angielski stoi w miejscu", desc: "Krótki przewodnik, który pokazuje, co naprawdę blokuje Twoje postępy i jak to odblokować.", link: "" },
+    { tag: "Wideo", title: "Czasy w angielskim bez wkuwania", desc: "Mini-lekcja, w której tłumaczymy logikę czasów. Raz zrozumiesz, na zawsze zapamiętasz.", link: "" },
+    { tag: "Ćwiczenia", title: "50 zdań na spotkanie po angielsku", desc: "Zestaw gotowych zwrotów do wydrukowania. Idealny przed ważnym callem albo prezentacją.", link: "" },
+    { tag: "Audio", title: "Wymowa: dźwięki, których nie ma w polskim", desc: "Nagranie z ćwiczeniami wymowy. Posłuchaj i powtarzaj, aż zabrzmi naturalnie.", link: "" },
+    { tag: "PDF", title: "Phrasal verbs, których używasz w pracy", desc: "Lista najważniejszych czasowników frazowych z przykładami z prawdziwego życia, nie z podręcznika.", link: "" },
+    { tag: "Wideo", title: "Jak myśleć po angielsku, zamiast tłumaczyć", desc: "Pokazujemy konkretny nawyk, który sprawia, że przestajesz układać zdania w głowie po polsku.", link: "" }
+  ];
+  const SHOP_DEFAULTS = [
+    { tag: "E-book", title: "Gramatyka, która ma sens", desc: "Cały system angielskiej gramatyki wytłumaczony przez logikę, nie przez tabelki. PDF, 80 stron.", price: "49 zł", img: "" },
+    { tag: "Kurs wideo", title: "Mów płynnie: 10 lekcji wideo", desc: "Dziesięć nagrań, które krok po kroku przeprowadzą Cię od blokady do swobodnej rozmowy.", price: "199 zł", img: "" },
+    { tag: "Pakiet", title: "E-book + kurs wideo", desc: "Wszystko razem, taniej. Najlepszy start, jeśli chcesz ogarnąć temat kompleksowo.", price: "219 zł", img: "" }
+  ];
+
   const S = {
-    read: (k) => { try { return JSON.parse(localStorage.getItem(k) || "[]"); } catch (e) { return []; } },
+    read: (k, def) => { try { const r = localStorage.getItem(k); return r === null ? (def || []) : JSON.parse(r); } catch (e) { return def || []; } },
     write: (k, a) => {
       try { localStorage.setItem(k, JSON.stringify(a)); return true; }
       catch (e) { alert("Ta przeglądarka blokuje zapis lokalny w tym podglądzie. Na wgranej stronie (serwer lub GitHub Pages) zadziała."); return false; }
@@ -112,6 +128,15 @@
     if (m10 >= 2 && m10 <= 4 && !(m100 >= 12 && m100 <= 14)) return few;
     return many;
   };
+
+  /* jednorazowe wgranie treści startowych */
+  try {
+    if (!localStorage.getItem(SEED_FLAG)) {
+      if (localStorage.getItem(KB_KEY) === null) localStorage.setItem(KB_KEY, JSON.stringify(KB_DEFAULTS));
+      if (localStorage.getItem(SHOP_KEY) === null) localStorage.setItem(SHOP_KEY, JSON.stringify(SHOP_DEFAULTS));
+      localStorage.setItem(SEED_FLAG, "1");
+    }
+  } catch (e) {}
 
   /* logowanie */
   function adminLogin() {
@@ -139,14 +164,14 @@
     const title = val("kbTitle");
     if (!title) { document.getElementById("kbTitle").focus(); return; }
     const item = { title, desc: val("kbDesc"), tag: document.getElementById("kbTag").value, link: val("kbLink") };
-    const arr = S.read(KB_KEY);
+    const arr = S.read(KB_KEY, KB_DEFAULTS);
     if (editKb === null) arr.push(item); else arr[editKb] = item;
     S.write(KB_KEY, arr);
     cancelKb();
     renderKb();
   }
   function editKbItem(i) {
-    const it = S.read(KB_KEY)[i]; if (!it) return;
+    const it = S.read(KB_KEY, KB_DEFAULTS)[i]; if (!it) return;
     editKb = i;
     set("kbTitle", it.title); set("kbDesc", it.desc); set("kbLink", it.link);
     document.getElementById("kbTag").value = it.tag || "PDF";
@@ -166,12 +191,12 @@
     show("kbCancel", false);
   }
   function delKb(i) {
-    const arr = S.read(KB_KEY); arr.splice(i, 1); S.write(KB_KEY, arr);
+    const arr = S.read(KB_KEY, KB_DEFAULTS); arr.splice(i, 1); S.write(KB_KEY, arr);
     if (editKb === i) cancelKb();
     renderKb();
   }
   function renderKb() {
-    const arr = S.read(KB_KEY);
+    const arr = S.read(KB_KEY, KB_DEFAULTS);
     document.getElementById("kbCount").textContent = arr.length + " " + plural(arr.length, "materiał", "materiały", "materiałów");
     document.getElementById("kbList").innerHTML = arr.length
       ? arr.map((it, i) =>
@@ -185,14 +210,14 @@
     const title = val("pTitle");
     if (!title) { document.getElementById("pTitle").focus(); return; }
     const item = { title, desc: val("pDesc"), price: val("pPrice"), tag: val("pTag"), img: val("pImg") };
-    const arr = S.read(SHOP_KEY);
+    const arr = S.read(SHOP_KEY, SHOP_DEFAULTS);
     if (editShop === null) arr.push(item); else arr[editShop] = item;
     S.write(SHOP_KEY, arr);
     cancelProduct();
     renderProducts();
   }
   function editProductItem(i) {
-    const it = S.read(SHOP_KEY)[i]; if (!it) return;
+    const it = S.read(SHOP_KEY, SHOP_DEFAULTS)[i]; if (!it) return;
     editShop = i;
     set("pTitle", it.title); set("pDesc", it.desc); set("pPrice", it.price); set("pTag", it.tag); set("pImg", it.img);
     document.getElementById("pSubmit").textContent = "Zapisz zmiany";
@@ -210,12 +235,12 @@
     show("pCancel", false);
   }
   function delProduct(i) {
-    const arr = S.read(SHOP_KEY); arr.splice(i, 1); S.write(SHOP_KEY, arr);
+    const arr = S.read(SHOP_KEY, SHOP_DEFAULTS); arr.splice(i, 1); S.write(SHOP_KEY, arr);
     if (editShop === i) cancelProduct();
     renderProducts();
   }
   function renderProducts() {
-    const arr = S.read(SHOP_KEY);
+    const arr = S.read(SHOP_KEY, SHOP_DEFAULTS);
     document.getElementById("pCount").textContent = arr.length + " " + plural(arr.length, "produkt", "produkty", "produktów");
     document.getElementById("pList").innerHTML = arr.length
       ? arr.map((it, i) =>
