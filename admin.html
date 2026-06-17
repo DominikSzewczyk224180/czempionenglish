@@ -99,6 +99,7 @@
   const KB_KEY = "cze_kb";
   const SHOP_KEY = "cze_shop";
   const SEED_FLAG = "cze_seeded";
+  const SEED_VERSION = "2";
   let editKb = null;
   let editShop = null;
   let pImgData = "";
@@ -106,18 +107,21 @@
   let kbFileName = "";
 
   /* Treści startowe (te same co na stronie) */
+  const PDF_DEMO = "data:application/pdf;base64,JVBERi0xLjQKMSAwIG9iago8PCAvVHlwZSAvQ2F0YWxvZyAvUGFnZXMgMiAwIFIgPj4KZW5kb2JqCjIgMCBvYmoKPDwgL1R5cGUgL1BhZ2VzIC9LaWRzIFszIDAgUl0gL0NvdW50IDEgPj4KZW5kb2JqCjMgMCBvYmoKPDwgL1R5cGUgL1BhZ2UgL1BhcmVudCAyIDAgUiAvTWVkaWFCb3ggWzAgMCA1OTUgODQyXSAvUmVzb3VyY2VzIDw8IC9Gb250IDw8IC9GMSA0IDAgUiA+PiA+PiAvQ29udGVudHMgNSAwIFIgPj4KZW5kb2JqCjQgMCBvYmoKPDwgL1R5cGUgL0ZvbnQgL1N1YnR5cGUgL1R5cGUxIC9CYXNlRm9udCAvSGVsdmV0aWNhID4+CmVuZG9iago1IDAgb2JqCjw8IC9MZW5ndGggMTcyID4+CnN0cmVhbQpCVCAvRjEgMjIgVGYgNzAgNzYwIFRkIChDemVtcGlvbiBFbmdsaXNoKSBUaiAwIC0zMCBUZCAvRjEgMTMgVGYgKE1hdGVyaWFsIHByenlrbGFkb3d5IC0gd2Vyc2phIGRlbW9uc3RyYWN5am5hKSBUaiAwIC0yMiBUZCAoVHUgem5hamR6aWUgc2llIHdsYXNjaXdhIHRyZXNjIG1hdGVyaWFsdS4pIFRqIEVUCmVuZHN0cmVhbQplbmRvYmoKeHJlZgowIDYKMDAwMDAwMDAwMCA2NTUzNSBmIAowMDAwMDAwMDA5IDAwMDAwIG4gCjAwMDAwMDAwNTggMDAwMDAgbiAKMDAwMDAwMDExNSAwMDAwMCBuIAowMDAwMDAwMjQxIDAwMDAwIG4gCjAwMDAwMDAzMTEgMDAwMDAgbiAKdHJhaWxlcgo8PCAvU2l6ZSA2IC9Sb290IDEgMCBSID4+CnN0YXJ0eHJlZgo1MzQKJSVFT0Y=";
+  const VIDEO_DEMO = "https://www.youtube.com/results?search_query=angielski+czasy+bez+wkuwania";
+  const AUDIO_DEMO = "https://open.spotify.com/episode/2Nm1fC2tRG270K0Gdw5Csy";
   const KB_DEFAULTS = [
-    { tag: "PDF", title: "5 powodów, dlaczego Twój angielski stoi w miejscu", desc: "Krótki przewodnik, który pokazuje, co naprawdę blokuje Twoje postępy i jak to odblokować.", link: "" },
-    { tag: "Wideo", title: "Czasy w angielskim bez wkuwania", desc: "Mini-lekcja, w której tłumaczymy logikę czasów. Raz zrozumiesz, na zawsze zapamiętasz.", link: "" },
-    { tag: "Ćwiczenia", title: "50 zdań na spotkanie po angielsku", desc: "Zestaw gotowych zwrotów do wydrukowania. Idealny przed ważnym callem albo prezentacją.", link: "" },
-    { tag: "Audio", title: "Wymowa: dźwięki, których nie ma w polskim", desc: "Nagranie z ćwiczeniami wymowy. Posłuchaj i powtarzaj, aż zabrzmi naturalnie.", link: "" },
-    { tag: "PDF", title: "Phrasal verbs, których używasz w pracy", desc: "Lista najważniejszych czasowników frazowych z przykładami z prawdziwego życia, nie z podręcznika.", link: "" },
-    { tag: "Wideo", title: "Jak myśleć po angielsku, zamiast tłumaczyć", desc: "Pokazujemy konkretny nawyk, który sprawia, że przestajesz układać zdania w głowie po polsku.", link: "" }
+    { tag: "PDF", title: "5 powodów, dlaczego Twój angielski stoi w miejscu", desc: "Krótki przewodnik, który pokazuje, co naprawdę blokuje Twoje postępy i jak to odblokować.", file: PDF_DEMO, fileName: "5-powodow.pdf", link: "" },
+    { tag: "Wideo", title: "Czasy w angielskim bez wkuwania", desc: "Mini-lekcja, w której tłumaczymy logikę czasów. Raz zrozumiesz, na zawsze zapamiętasz.", file: "", fileName: "", link: VIDEO_DEMO },
+    { tag: "Ćwiczenia", title: "50 zdań na spotkanie po angielsku", desc: "Zestaw gotowych zwrotów do wydrukowania. Idealny przed ważnym callem albo prezentacją.", file: PDF_DEMO, fileName: "50-zdan.pdf", link: "" },
+    { tag: "Audio", title: "Wymowa: dźwięki, których nie ma w polskim", desc: "Nagranie z ćwiczeniami wymowy. Posłuchaj i powtarzaj, aż zabrzmi naturalnie.", file: "", fileName: "", link: AUDIO_DEMO },
+    { tag: "PDF", title: "Phrasal verbs, których używasz w pracy", desc: "Lista najważniejszych czasowników frazowych z przykładami z prawdziwego życia, nie z podręcznika.", file: PDF_DEMO, fileName: "phrasal-verbs.pdf", link: "" },
+    { tag: "Wideo", title: "Jak myśleć po angielsku, zamiast tłumaczyć", desc: "Pokazujemy konkretny nawyk, który sprawia, że przestajesz układać zdania w głowie po polsku.", file: "", fileName: "", link: VIDEO_DEMO }
   ];
   const SHOP_DEFAULTS = [
-    { tag: "E-book", title: "Gramatyka, która ma sens", desc: "Cały system angielskiej gramatyki wytłumaczony przez logikę, nie przez tabelki. PDF, 80 stron.", price: "49 zł", img: "" },
-    { tag: "Kurs wideo", title: "Mów płynnie: 10 lekcji wideo", desc: "Dziesięć nagrań, które krok po kroku przeprowadzą Cię od blokady do swobodnej rozmowy.", price: "199 zł", img: "" },
-    { tag: "Pakiet", title: "E-book + kurs wideo", desc: "Wszystko razem, taniej. Najlepszy start, jeśli chcesz ogarnąć temat kompleksowo.", price: "219 zł", img: "" }
+    { tag: "E-book", title: "Gramatyka, która ma sens", desc: "Cały system angielskiej gramatyki wytłumaczony przez logikę, a nie przez suche tabelki. 80 stron konkretów, przykłady z życia i ćwiczenia, które naprawdę zostają w głowie.", price: "49 zł", img: "" },
+    { tag: "Kurs wideo", title: "Mów płynnie: 10 lekcji wideo", desc: "Dziesięć nagrań wideo, które krok po kroku przeprowadzą Cię od blokady do swobodnej rozmowy. Oglądasz we własnym tempie i wracasz, kiedy tylko chcesz.", price: "199 zł", img: "" },
+    { tag: "Pakiet", title: "E-book + kurs wideo", desc: "E-book i kurs wideo w jednym pakiecie, taniej niż osobno. Najlepszy start, jeśli chcesz ogarnąć angielski kompleksowo i z gotowym planem.", price: "219 zł", img: "" }
   ];
 
   const S = {
@@ -147,10 +151,10 @@
 
   /* jednorazowe wgranie treści startowych */
   try {
-    if (!localStorage.getItem(SEED_FLAG)) {
-      if (localStorage.getItem(KB_KEY) === null) localStorage.setItem(KB_KEY, JSON.stringify(KB_DEFAULTS));
-      if (localStorage.getItem(SHOP_KEY) === null) localStorage.setItem(SHOP_KEY, JSON.stringify(SHOP_DEFAULTS));
-      localStorage.setItem(SEED_FLAG, "1");
+    if (localStorage.getItem(SEED_FLAG) !== SEED_VERSION) {
+      localStorage.setItem(KB_KEY, JSON.stringify(KB_DEFAULTS));
+      localStorage.setItem(SHOP_KEY, JSON.stringify(SHOP_DEFAULTS));
+      localStorage.setItem(SEED_FLAG, SEED_VERSION);
     }
   } catch (e) {}
 
