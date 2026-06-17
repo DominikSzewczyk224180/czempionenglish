@@ -78,14 +78,58 @@ function handleLead(form) {
    Teraz: informacja, że płatności są w przygotowaniu.
    Docelowo: backend tworzy transakcję w Przelewy24 i zwraca link do płatności.
    =========================================================== */
+function escHtml(s) { return String(s == null ? "" : s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c])); }
+
+/* Sklep - ekran zamówienia (checkout).
+   Teraz: pokazuje cały przepływ płatności (wersja demonstracyjna).
+   Docelowo: backend rejestruje transakcję w Przelewy24 i przekierowuje na bramkę. */
 function buyProduct(btn) {
-  /* TODO: start płatności przez backend:
-     const r = await fetch(`${API_BASE}/api/checkout`, { method:"POST", body: JSON.stringify({ productId: btn.dataset.productId }) });
-     const { redirectUrl } = await r.json();
-     window.location = redirectUrl; */
-  const body = btn.closest(".product-body");
-  const note = body && body.querySelector(".coming-note");
-  if (note) note.textContent = "Płatności online wkrótce. Napisz do nas, żeby kupić już teraz.";
+  const card = btn.closest(".product-card");
+  const name = card && card.querySelector("h3") ? card.querySelector("h3").textContent : "Produkt";
+  const price = card && card.querySelector(".product-price") ? card.querySelector(".product-price").textContent : "";
+  openCheckout(name, price);
+}
+function openCheckout(name, price) {
+  closeCheckout();
+  const ov = document.createElement("div");
+  ov.className = "checkout-overlay";
+  ov.id = "checkoutOverlay";
+  ov.innerHTML = `
+    <div class="checkout-card" role="dialog" aria-modal="true" aria-label="Zamówienie">
+      <button class="checkout-close" aria-label="Zamknij" onclick="closeCheckout()">&times;</button>
+      <div class="checkout-eyebrow">Zamówienie</div>
+      <h3 class="checkout-name">${escHtml(name)}</h3>
+      <div class="checkout-row"><span>Do zapłaty</span><strong>${escHtml(price)}</strong></div>
+      <label class="checkout-label" for="coEmail">E-mail (tu wyślemy materiał po opłaceniu)</label>
+      <input id="coEmail" class="checkout-input" type="email" placeholder="twoj@email.pl" autocomplete="email">
+      <button class="cta-primary full checkout-pay" onclick="payP24()">Zapłać przez Przelewy24</button>
+      <div class="checkout-trust"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 018 0v3"/></svg> Bezpieczna płatność: BLIK, karta, szybki przelew</div>
+      <div class="checkout-note" id="checkoutNote"></div>
+    </div>`;
+  document.body.appendChild(ov);
+  document.body.classList.add("modal-open");
+  ov.addEventListener("click", (e) => { if (e.target === ov) closeCheckout(); });
+  document.addEventListener("keydown", escClose);
+  const em = document.getElementById("coEmail"); if (em) em.focus();
+}
+function escClose(e) { if (e.key === "Escape") closeCheckout(); }
+function closeCheckout() {
+  const ov = document.getElementById("checkoutOverlay");
+  if (ov) ov.remove();
+  document.body.classList.remove("modal-open");
+  document.removeEventListener("keydown", escClose);
+}
+function payP24() {
+  /* DOCELOWO (z backendem):
+     const email = document.getElementById("coEmail").value;
+     const r = await fetch(`${API_BASE}/api/checkout`, { method:"POST", headers:{"Content-Type":"application/json"}, body: JSON.stringify({ product: ..., email }) });
+     const { redirectUrl } = await r.json();   // backend rejestruje transakcję w P24 i zwraca token
+     window.location = redirectUrl;            // przekierowanie na https://secure.przelewy24.pl/trnRequest/{token} */
+  const note = document.getElementById("checkoutNote");
+  if (note) {
+    note.classList.add("show");
+    note.textContent = "To wersja demonstracyjna. Po podłączeniu backendu ten przycisk przeniesie Cię prosto do Przelewy24 (BLIK, karta, przelew), a po zaksięgowaniu wpłaty materiał automatycznie trafi na Twój e-mail.";
+  }
 }
 
 /* ===========================================================
@@ -129,19 +173,34 @@ function buyProduct(btn) {
   const kbGrid = document.getElementById("kb-grid");
   if (kbGrid) {
     const items = read(KB_KEY, KB_DEFAULTS);
+    const linkKind = (u) => {
+      u = (u || "").toLowerCase();
+      if (/youtube\.com|youtu\.be|vimeo\.com|wistia/.test(u)) return "video";
+      if (/spotify\.com|soundcloud\.com|music\.apple|anchor\.fm|podbean/.test(u)) return "audio";
+      return "open";
+    };
+    const ICON = {
+      download: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12m0 0l-4-4m4 4l4-4M5 21h14"/></svg>',
+      video: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M10 8.5l6 3.5-6 3.5z" fill="currentColor" stroke="none"/></svg>',
+      audio: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 14v-1a8 8 0 0116 0v1"/><rect x="3.5" y="14" width="4" height="6" rx="1.6"/><rect x="16.5" y="14" width="4" height="6" rx="1.6"/></svg>',
+      open: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 5h5v5M19 5l-8 8M11 5H7a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4"/></svg>'
+    };
+    const action = (it) => {
+      if (it.file) {
+        const label = it.tag === "PDF" ? "Pobierz PDF" : "Pobierz plik";
+        return `<a class="kb-link" href="${esc(it.file)}" download="${esc(it.fileName || "material")}">${ICON.download} ${label}</a>`;
+      }
+      if (it.link) {
+        const k = linkKind(it.link);
+        const label = k === "video" ? "Obejrzyj wideo" : k === "audio" ? "Posłuchaj" : "Otwórz materiał";
+        return `<a class="kb-link" href="${esc(it.link)}" target="_blank" rel="noopener">${ICON[k]} ${label}</a>`;
+      }
+      return `<span class="kb-soon">Dostępne wkrótce</span>`;
+    };
     kbGrid.innerHTML = items.length
-      ? items.map((it) => {
-          const href = it.file || it.link || "";
-          const labels = { PDF: "Pobierz PDF", Wideo: "Obejrzyj", Audio: "Odsłuchaj", "Ćwiczenia": "Pobierz" };
-          const label = labels[it.tag] || "Otwórz";
-          const attrs = it.file
-            ? `href="${esc(it.file)}" download="${esc(it.fileName || "material")}"`
-            : `href="${esc(it.link)}" target="_blank" rel="noopener"`;
-          const link = href
-            ? `<a class="kb-link" ${attrs}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12m0 0l-4-4m4 4l4-4M5 21h14"/></svg> ${label}</a>`
-            : "";
-          return `<article class="kb-card reveal revealed"><span class="kb-tag">${esc(it.tag || "Materiał")}</span><h3>${esc(it.title)}</h3><p>${esc(it.desc || "")}</p>${link}</article>`;
-        }).join("")
+      ? items.map((it) =>
+          `<article class="kb-card reveal revealed"><span class="kb-tag">${esc(it.tag || "Materiał")}</span><h3>${esc(it.title)}</h3><p>${esc(it.desc || "")}</p>${action(it)}</article>`
+        ).join("")
       : `<p class="kb-empty" style="grid-column:1/-1">Brak materiałów. Wkrótce dodamy nowe.</p>`;
   }
 
@@ -153,7 +212,7 @@ function buyProduct(btn) {
           const media = it.img
             ? `<div class="product-media" style="background:#0c1220"><img src="${esc(it.img)}" alt="${esc(it.title)}" style="width:100%;height:100%;object-fit:cover"></div>`
             : `<div class="product-media"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 5a2 2 0 012-2h11a1 1 0 011 1v15a1 1 0 01-1 1H6a2 2 0 01-2-2V5z"/><path d="M4 19a2 2 0 012-2h12"/></svg></div>`;
-          return `<article class="product-card reveal revealed">${media}<div class="product-body"><span class="product-tag">${esc(it.tag || "Produkt")}</span><h3>${esc(it.title)}</h3><p>${esc(it.desc || "")}</p><div class="product-foot"><span class="product-price">${esc(it.price || "")}</span><button class="cta-primary" onclick="buyProduct(this)">Kup</button></div><p class="coming-note"></p></div></article>`;
+          return `<article class="product-card reveal revealed">${media}<div class="product-body"><span class="product-tag">${esc(it.tag || "Produkt")}</span><h3>${esc(it.title)}</h3><p>${esc(it.desc || "")}</p><div class="product-foot"><span class="product-price">${esc(it.price || "")}</span><button class="cta-primary" onclick="buyProduct(this)">Kup</button></div></div></article>`;
         }).join("")
       : `<p class="kb-empty" style="grid-column:1/-1">Brak produktów. Wkrótce dodamy nowe.</p>`;
   }
