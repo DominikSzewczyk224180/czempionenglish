@@ -158,3 +158,36 @@ function buyProduct(btn) {
       : `<p class="kb-empty" style="grid-column:1/-1">Brak produktów. Wkrótce dodamy nowe.</p>`;
   }
 })();
+
+/* ===========================================================
+   Hero - rotująca karta z hasłami (baza wiedzy / sklep / opinie / podcast)
+   Klik przenosi do odpowiedniej sekcji/strony.
+   =========================================================== */
+(function () {
+  const rotator = document.getElementById("heroRotator");
+  if (!rotator) return;
+  const elMain = document.getElementById("rotMain");
+  const elSub = document.getElementById("rotSub");
+  const items = [
+    { main: "Ucz się za darmo", sub: "baza wiedzy: PDF-y, wideo, audio", href: "baza-wiedzy.html" },
+    { main: "Gotowe e-booki i kursy", sub: "w sklepie, już od 49 zł", href: "sklep.html" },
+    { main: "Zobacz, kto już mówi", sub: "prawdziwe opinie uczniów", href: "#social" },
+    { main: "Angielski na rozum", sub: "posłuchaj naszego podcastu", href: "#podcast" }
+  ];
+  let i = 0;
+  function apply(idx) {
+    elMain.textContent = items[idx].main;
+    elSub.textContent = items[idx].sub;
+    rotator.setAttribute("href", items[idx].href);
+  }
+  apply(0);
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  setInterval(() => {
+    rotator.classList.add("rot-swap");
+    setTimeout(() => {
+      i = (i + 1) % items.length;
+      apply(i);
+      rotator.classList.remove("rot-swap");
+    }, 300);
+  }, 3200);
+})();
