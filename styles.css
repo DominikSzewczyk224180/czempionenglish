@@ -55,7 +55,7 @@ section{padding:110px 0;position:relative;content-visibility:auto;contain-intrin
 .nav-links a.active{opacity:1;color:var(--accent)}
 .burger{display:none;background:0;border:0;cursor:pointer;padding:8px;color:#fff}
 .burger svg{width:28px;height:28px}
-@media(max-width:1040px){
+@media(max-width:1150px){
   .nav-links,.nav-cta{display:none}
   .burger{display:block}
   body.nav-menu-open{overflow:hidden}
