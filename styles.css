@@ -69,6 +69,10 @@ section{padding:110px 0;position:relative;content-visibility:auto;contain-intrin
 .cta-primary:hover{background:var(--accent-hover);transform:translateY(-2px);box-shadow:0 8px 20px rgba(250,164,2,.28)}
 .cta-primary:active{transform:translateY(0);box-shadow:none}
 .cta-primary.full{display:block;width:100%}
+/* Nav CTA: większy, złoty z połyskiem, pulsujący (jak w poprzednim menu) */
+.nav-cta{background:linear-gradient(180deg,#FFC74F 0%,var(--accent) 48%,#E08E00 100%);color:#3a2400;font-weight:700;padding:16px 34px;font-size:17px;border:1px solid rgba(255,214,130,.65);box-shadow:0 6px 18px rgba(250,164,2,.42),inset 0 1px 0 rgba(255,255,255,.5);animation:ctaPulse 2.4s ease-in-out infinite}
+.nav-cta:hover{background:linear-gradient(180deg,#FFD16A 0%,var(--accent-hover) 52%,#CC8200 100%);color:#2a1a00;transform:translateY(-2px);box-shadow:0 11px 28px rgba(250,164,2,.55),inset 0 1px 0 rgba(255,255,255,.55)}
+@keyframes ctaPulse{0%{box-shadow:0 6px 18px rgba(250,164,2,.42),inset 0 1px 0 rgba(255,255,255,.5),0 0 0 0 rgba(250,164,2,.55)}70%{box-shadow:0 6px 18px rgba(250,164,2,.42),inset 0 1px 0 rgba(255,255,255,.5),0 0 0 14px rgba(250,164,2,0)}100%{box-shadow:0 6px 18px rgba(250,164,2,.42),inset 0 1px 0 rgba(255,255,255,.5),0 0 0 0 rgba(250,164,2,0)}}
 .cta-ghost{display:inline-block;padding:14px 26px;color:#fff;border:1px solid rgba(255,255,255,.25);border-radius:10px;font-size:15px;transition:border-color .25s,color .25s}
 .cta-ghost:hover{border-color:var(--accent);color:var(--accent)}
 .cta-wrap{margin-top:48px;text-align:center}
@@ -391,3 +395,5 @@ main>section.dark{border-top-color:rgba(255,255,255,.09)}
 .admin-img-preview img{width:90px;height:90px;object-fit:cover;border-radius:10px;border:1px solid var(--border-subtle);background:#0c1220}
 .admin-img-remove{background:none;border:1px solid rgba(255,255,255,.18);color:rgba(255,255,255,.7);border-radius:8px;padding:7px 12px;font-size:13px;cursor:pointer;font-family:inherit;transition:border-color .2s,color .2s}
 .admin-img-remove:hover{border-color:var(--danger);color:var(--danger)}
+.admin-file-info{display:flex;align-items:center;gap:12px;margin-top:12px;font-size:13px;color:rgba(255,255,255,.7)}
+.admin-file-info span{word-break:break-all}
