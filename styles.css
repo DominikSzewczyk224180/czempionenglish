@@ -208,9 +208,10 @@ footer{background:var(--bg-dark);color:#fff;padding:72px 0 36px;content-visibili
 .foot-grid ul{list-style:none;display:flex;flex-direction:column;gap:10px}
 .foot-grid a{color:rgba(255,255,255,.7);font-size:15px;transition:color .2s}
 .foot-grid a:hover{color:#fff}
-.copy{text-align:center;padding-top:28px;border-top:1px solid var(--border-subtle);color:rgba(255,255,255,.5);font-size:14px}
-.foot-admin{color:rgba(255,255,255,.22);font-size:13px;margin-left:6px;transition:color .2s}
-.foot-admin:hover{color:rgba(255,255,255,.55)}
+.copy{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:14px;padding-top:28px;border-top:1px solid var(--border-subtle);color:rgba(255,255,255,.5);font-size:14px}
+.foot-admin{display:inline-flex;align-items:center;gap:7px;padding:7px 15px;border:1px solid var(--accent-border);border-radius:999px;background:var(--accent-soft);color:var(--accent);font-size:13px;font-weight:600;transition:background .2s,border-color .2s,transform .15s}
+.foot-admin svg{width:15px;height:15px}
+.foot-admin:hover{background:rgba(250,164,2,.2);border-color:var(--accent);transform:translateY(-1px)}
 
 /* ===========================================================
    Podstrony (Baza wiedzy / Sklep)
