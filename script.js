@@ -60,7 +60,7 @@ function handleLead(form) {
     email: (form.querySelector('[name="email"]') || {}).value || "",
   };
 
-  /* TODO: Klaviyo (zapis subskrybenta do listy „Przewodnik"):
+  /* TODO: Klaviyo (zapis do listy newslettera + automatyczny mail z przewodnikiem):
      fetch(`https://a.klaviyo.com/client/subscriptions/?company_id=${KLAVIYO_COMPANY_ID}`, {
        method: "POST",
        headers: { "Content-Type": "application/json", revision: "2024-10-15" },
@@ -119,3 +119,43 @@ function buyProduct(btn) {
      // renderuj karty .product-card do #shop-grid
    }
    =========================================================== */
+
+/* ===========================================================
+   DEMO (tymczasowe): treści dodane w panelu admina
+   To, co właścicielka doda w admin.html, zapisuje się lokalnie
+   (localStorage) i pojawia się tutaj na stronach Baza wiedzy / Sklep.
+   Docelowo zastąpi to backend Flask: poniższe funkcje będą po prostu
+   pobierać dane z API zamiast z localStorage.
+   =========================================================== */
+(function () {
+  const KB_KEY = "cze_kb";
+  const SHOP_KEY = "cze_shop";
+  const read = (k) => { try { return JSON.parse(localStorage.getItem(k) || "[]"); } catch (e) { return []; } };
+  const esc = (s) => String(s == null ? "" : s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+
+  const kbGrid = document.getElementById("kb-grid");
+  if (kbGrid) {
+    read(KB_KEY).slice().reverse().forEach((it) => {
+      const card = document.createElement("article");
+      card.className = "kb-card reveal revealed";
+      const link = it.link
+        ? '<a class="kb-link" href="' + esc(it.link) + '" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12m0 0l-4-4m4 4l4-4M5 21h14"/></svg> Otwórz</a>'
+        : "";
+      card.innerHTML = '<span class="kb-tag">' + esc(it.tag || "Materiał") + "</span><h3>" + esc(it.title) + "</h3><p>" + esc(it.desc || "") + "</p>" + link;
+      kbGrid.insertBefore(card, kbGrid.firstChild);
+    });
+  }
+
+  const shopGrid = document.getElementById("shop-grid");
+  if (shopGrid) {
+    read(SHOP_KEY).slice().reverse().forEach((it) => {
+      const card = document.createElement("article");
+      card.className = "product-card reveal revealed";
+      const media = it.img
+        ? '<div class="product-media" style="background:#0c1220"><img src="' + esc(it.img) + '" alt="' + esc(it.title) + '" style="width:100%;height:100%;object-fit:cover"></div>'
+        : '<div class="product-media"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 5a2 2 0 012-2h11a1 1 0 011 1v15a1 1 0 01-1 1H6a2 2 0 01-2-2V5z"/><path d="M4 19a2 2 0 012-2h12"/></svg></div>';
+      card.innerHTML = media + '<div class="product-body"><span class="product-tag">' + esc(it.tag || "Produkt") + "</span><h3>" + esc(it.title) + "</h3><p>" + esc(it.desc || "") + '</p><div class="product-foot"><span class="product-price">' + esc(it.price || "") + '</span><button class="cta-primary" onclick="buyProduct(this)">Kup</button></div><p class="coming-note"></p></div>';
+      shopGrid.insertBefore(card, shopGrid.firstChild);
+    });
+  }
+})();

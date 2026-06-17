@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#0c1220">
+<meta name="robots" content="noindex">
+<title>Panel | Czempion English</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..600;1,9..144,400..500&family=Source+Sans+3:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body class="admin-body">
+
+<div class="admin-top">
+  <a class="brand" href="index.html"><img src="czempion_color_logo.webp" alt="Czempion English"> Panel administracyjny</a>
+  <button class="admin-logout" id="logoutBtn" style="display:none" onclick="adminLogout()">Wyloguj</button>
+</div>
+
+<!-- Logowanie -->
+<div id="loginView" class="admin-login">
+  <h1>Panel administracyjny</h1>
+  <p>Wersja demonstracyjna. Hasło: 12345.</p>
+  <div class="admin-field">
+    <input id="pw" class="admin-input" type="password" placeholder="Hasło" onkeydown="if(event.key==='Enter')adminLogin()">
+  </div>
+  <button class="cta-primary full" onclick="adminLogin()">Zaloguj</button>
+  <p id="loginErr" style="color:var(--danger);font-size:13px;margin-top:12px;display:none">Błędne hasło.</p>
+</div>
+
+<!-- Panel -->
+<div id="panelView" class="admin-wrap" style="display:none">
+  <div class="admin-grid">
+
+    <div class="admin-card">
+      <h2>Baza wiedzy</h2>
+      <p class="hint">Dodaj materiał. Pojawi się na stronie Baza wiedzy.</p>
+      <div class="admin-field"><label>Tytuł</label><input id="kbTitle" class="admin-input" type="text" placeholder="np. Czasy bez wkuwania"></div>
+      <div class="admin-field"><label>Opis</label><textarea id="kbDesc" class="admin-textarea" placeholder="Krótki opis materiału"></textarea></div>
+      <div class="admin-field"><label>Kategoria</label>
+        <select id="kbTag" class="admin-select"><option>PDF</option><option>Wideo</option><option>Ćwiczenia</option><option>Audio</option><option>Inne</option></select>
+      </div>
+      <div class="admin-field"><label>Link (opcjonalnie)</label><input id="kbLink" class="admin-input" type="url" placeholder="https://..."></div>
+      <button class="cta-primary full" onclick="addKb()">Dodaj materiał</button>
+      <ul class="admin-list" id="kbList"></ul>
+    </div>
+
+    <div class="admin-card">
+      <h2>Sklep</h2>
+      <p class="hint">Dodaj produkt. Pojawi się na stronie Sklep.</p>
+      <div class="admin-field"><label>Tytuł</label><input id="pTitle" class="admin-input" type="text" placeholder="np. E-book: Gramatyka, która ma sens"></div>
+      <div class="admin-field"><label>Opis</label><textarea id="pDesc" class="admin-textarea" placeholder="Krótki opis produktu"></textarea></div>
+      <div class="admin-field"><label>Cena</label><input id="pPrice" class="admin-input" type="text" placeholder="np. 49 zł"></div>
+      <div class="admin-field"><label>Kategoria</label><input id="pTag" class="admin-input" type="text" placeholder="np. E-book"></div>
+      <div class="admin-field"><label>Zdjęcie (URL, opcjonalnie)</label><input id="pImg" class="admin-input" type="url" placeholder="https://..."></div>
+      <button class="cta-primary full" onclick="addProduct()">Dodaj produkt</button>
+      <ul class="admin-list" id="pList"></ul>
+    </div>
+
+  </div>
+  <p class="admin-note">Dane zapisują się lokalnie w tej przeglądarce (wersja demonstracyjna). Docelowo trzyma je backend, a logowanie będzie prawdziwe.</p>
+</div>
+
+<script>
+  const KB_KEY = "cze_kb";
+  const SHOP_KEY = "cze_shop";
+  const S = {
+    read: (k) => { try { return JSON.parse(localStorage.getItem(k) || "[]"); } catch (e) { return []; } },
+    write: (k, a) => {
+      try { localStorage.setItem(k, JSON.stringify(a)); return true; }
+      catch (e) { alert("Ta przeglądarka blokuje zapis lokalny w tym podglądzie. Na wgranej stronie (serwer lub GitHub Pages) zadziała."); return false; }
+    }
+  };
+  const esc = (s) => String(s == null ? "" : s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+  const val = (id) => document.getElementById(id).value.trim();
+  const clear = (...ids) => ids.forEach((id) => (document.getElementById(id).value = ""));
+
+  function adminLogin() {
+    if (document.getElementById("pw").value === "12345") {
+      try { localStorage.setItem("cze_admin", "1"); } catch (e) {}
+      showPanel();
+    } else {
+      document.getElementById("loginErr").style.display = "block";
+    }
+  }
+  function adminLogout() {
+    try { localStorage.removeItem("cze_admin"); } catch (e) {}
+    location.reload();
+  }
+  function showPanel() {
+    document.getElementById("loginView").style.display = "none";
+    document.getElementById("panelView").style.display = "block";
+    document.getElementById("logoutBtn").style.display = "inline-block";
+    renderKb();
+    renderProducts();
+  }
+
+  function addKb() {
+    const title = val("kbTitle");
+    if (!title) return;
+    const arr = S.read(KB_KEY);
+    arr.push({ title, desc: val("kbDesc"), tag: document.getElementById("kbTag").value, link: val("kbLink") });
+    S.write(KB_KEY, arr);
+    clear("kbTitle", "kbDesc", "kbLink");
+    renderKb();
+  }
+  function addProduct() {
+    const title = val("pTitle");
+    if (!title) return;
+    const arr = S.read(SHOP_KEY);
+    arr.push({ title, desc: val("pDesc"), price: val("pPrice"), tag: val("pTag"), img: val("pImg") });
+    S.write(SHOP_KEY, arr);
+    clear("pTitle", "pDesc", "pPrice", "pTag", "pImg");
+    renderProducts();
+  }
+  function delItem(key, idx) {
+    const arr = S.read(key);
+    arr.splice(idx, 1);
+    S.write(key, arr);
+    key === KB_KEY ? renderKb() : renderProducts();
+  }
+
+  function renderKb() {
+    const ul = document.getElementById("kbList");
+    const arr = S.read(KB_KEY);
+    ul.innerHTML = arr.length
+      ? arr.map((it, i) => `<li class="admin-item"><div><div class="ai-main">${esc(it.title)}</div><div class="ai-sub">${esc(it.tag || "")}</div></div><button class="admin-del" onclick="delItem('${KB_KEY}',${i})">Usuń</button></li>`).join("")
+      : '<li class="admin-empty">Brak materiałów. Dodaj pierwszy powyżej.</li>';
+  }
+  function renderProducts() {
+    const ul = document.getElementById("pList");
+    const arr = S.read(SHOP_KEY);
+    ul.innerHTML = arr.length
+      ? arr.map((it, i) => `<li class="admin-item"><div><div class="ai-main">${esc(it.title)}</div><div class="ai-sub">${esc(it.tag || "")} ${esc(it.price || "")}</div></div><button class="admin-del" onclick="delItem('${SHOP_KEY}',${i})">Usuń</button></li>`).join("")
+      : '<li class="admin-empty">Brak produktów. Dodaj pierwszy powyżej.</li>';
+  }
+
+  try { if (localStorage.getItem("cze_admin") === "1") showPanel(); } catch (e) {}
+</script>
+</body>
+</html>
