@@ -6,273 +6,36 @@
 <meta name="theme-color" content="#0c1220">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="description" content="Nauka angielskiego przez logikę, nie wkuwanie. +1 poziom w 3–4 miesiące. Umów bezpłatną konsultację.">
-<title>Czempion English — Mów po angielsku z pewnością siebie</title>
+<meta name="description" content="Nauka angielskiego przez logikę, nie wkuwanie. +1 poziom w 3-4 miesiące. Umów bezpłatną konsultację.">
+<title>Czempion English | Mów po angielsku z pewnością siebie</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..600;1,9..144,400..500&family=Source+Sans+3:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap">
 <link rel="preload" as="image" href="czempion_color_logo.webp">
-<style>
-:root{--bg-dark:#0c1220;--bg-dark-alt:#141c2e;--bg-light:#FAF6EE;--text-light:#fff;--text-dark:#1a1a2e;--text-muted:#6b7280;--accent:#FCA500;--accent-hover:#E08F00;--accent-glow:rgba(252,165,0,.20);--burgundy:#6B1F2E;--burgundy-tint:rgba(107,31,46,.12);--card-dark:rgba(255,255,255,.04);--card-light:#fff;--border-subtle:rgba(255,255,255,.08);--danger:#e76f51}
-*{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
-body{font-family:'Source Sans 3',system-ui,-apple-system,sans-serif;font-size:18px;line-height:1.7;color:var(--text-dark);background:var(--bg-light);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
-h1,h2,h3,h4{font-family:'Fraunces',Georgia,serif;line-height:1.2;letter-spacing:-.015em;font-weight:400}
-h1{font-size:clamp(38px,5.6vw,72px)}
-h2{font-size:clamp(30px,3.6vw,48px)}
-h3{font-size:clamp(20px,2.2vw,28px);color:var(--text-muted);font-weight:400;font-style:italic}
-p{font-size:18px}
-a{color:inherit;text-decoration:none}
-img{max-width:100%;display:block;height:auto}
-.container{max-width:1140px;margin:0 auto;padding:0 24px;padding-left:max(24px,env(safe-area-inset-left));padding-right:max(24px,env(safe-area-inset-right))}
-section{padding:110px 0;position:relative;content-visibility:auto;contain-intrinsic-size:1px 900px}
-@media(max-width:768px){section{padding:72px 0}}
-.dark{background:linear-gradient(180deg,var(--bg-dark),var(--bg-dark-alt));color:var(--text-light)}
-.dark h3{color:rgba(255,255,255,.7)}
-.sec-head{text-align:center;max-width:840px;margin:0 auto 60px}
-.sec-head h3{margin-top:16px}
-
-.nav{position:fixed;inset:0 0 auto 0;z-index:1000;transition:background .3s,backdrop-filter .3s;background:transparent;padding:16px 0;padding-top:max(16px,env(safe-area-inset-top))}
-.nav.scrolled{background:rgba(12,18,32,.88);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
-.nav-inner{max-width:1200px;margin:0 auto;padding:0 24px;display:flex;align-items:center;justify-content:space-between;gap:24px}
-.nav-logo{display:flex;align-items:center}
-.nav-logo img{height:56px;width:56px;border-radius:10px;object-fit:cover;transition:transform .25s}
-.nav-logo:hover img{transform:scale(1.06)}
-.nav-links{display:flex;gap:28px;list-style:none}
-.nav-links a{font-size:14px;text-transform:uppercase;letter-spacing:.08em;font-weight:500;color:#fff;opacity:.85;transition:color .2s,opacity .2s}
-.nav-links a:hover{opacity:1;color:var(--accent)}
-.burger{display:none;background:0;border:0;cursor:pointer;padding:8px;color:#fff}
-.burger svg{width:28px;height:28px}
-@media(max-width:960px){.nav-links,.nav-cta{display:none}.burger{display:block}body.nav-menu-open{overflow:hidden}body.nav-menu-open .nav-links{display:flex;position:fixed;inset:0;background:var(--bg-dark);flex-direction:column;justify-content:center;align-items:center;gap:32px;z-index:999}body.nav-menu-open .nav-links a{font-size:22px}body.nav-menu-open .nav-cta{display:inline-block;position:fixed;bottom:40px;left:24px;right:24px;text-align:center;z-index:1000}}
-
-.cta-primary{display:inline-block;background:linear-gradient(180deg,#B37500 0%,#CC8400 8%,#FFB733 28%,#FFD27A 42%,#FCB420 55%,#D98E00 75%,#B37500 95%,#9A6500 100%);color:#2A1F0E!important;font-weight:700;padding:16px 34px;border-radius:8px;font-size:17px;letter-spacing:.01em;border:1px solid #B37500;cursor:pointer;transition:background .3s cubic-bezier(.2,.8,.2,1),transform .3s cubic-bezier(.2,.8,.2,1),box-shadow .3s cubic-bezier(.2,.8,.2,1),filter .25s;box-shadow:inset 0 1px 0 rgba(255,230,180,.35),inset 0 -1px 0 rgba(0,0,0,.25),0 1px 2px rgba(0,0,0,.15),0 4px 12px rgba(15,42,77,.18),0 0 0 0 var(--accent-glow);text-shadow:0 1px 0 rgba(255,235,190,.4);animation:ctaPulse 3s ease-in-out infinite;font-family:inherit;text-align:center;position:relative}
-.cta-primary:hover{background:linear-gradient(180deg,#9A6500 0%,#CC8400 10%,#FCB420 25%,#FFDD94 42%,#FFD27A 55%,#E59600 75%,#CC8400 95%,#B37500 100%);transform:translateY(-2px) scale(1.015);box-shadow:inset 0 1px 0 rgba(255,235,190,.5),inset 0 -1px 0 rgba(0,0,0,.2),0 2px 4px rgba(0,0,0,.12),0 10px 28px rgba(252,165,0,.45),0 0 0 0 var(--accent-glow);filter:brightness(1.04)}
-.cta-primary:active{transform:translateY(0) scale(1);filter:brightness(.92);box-shadow:inset 0 2px 4px rgba(0,0,0,.3),inset 0 -1px 0 rgba(255,230,180,.15),0 1px 2px rgba(0,0,0,.15),0 0 0 0 var(--accent-glow)}
-@keyframes ctaPulse{0%,100%{box-shadow:inset 0 1px 0 rgba(255,230,180,.35),inset 0 -1px 0 rgba(0,0,0,.25),0 1px 2px rgba(0,0,0,.15),0 4px 12px rgba(15,42,77,.18),0 0 0 0 var(--accent-glow)}50%{box-shadow:inset 0 1px 0 rgba(255,230,180,.35),inset 0 -1px 0 rgba(0,0,0,.25),0 1px 2px rgba(0,0,0,.15),0 4px 12px rgba(15,42,77,.18),0 0 0 16px rgba(252,165,0,0)}}
-.cta-ghost{display:inline-block;padding:14px 28px;color:#fff;border:1px solid rgba(255,255,255,.25);border-radius:8px;font-size:15px;transition:border-color .25s,color .25s}
-.cta-ghost:hover{border-color:var(--accent);color:var(--accent)}
-.cta-wrap{margin-top:48px;text-align:center}
-
-.hero{min-height:100vh;min-height:100dvh;display:flex;align-items:center;padding:140px 0 80px;background:radial-gradient(ellipse at top,#1a2542 0%,var(--bg-dark) 55%);color:#fff;content-visibility:visible}
-.hero-inner{text-align:center;max-width:940px;margin:0 auto;position:relative;z-index:2}
-.pill{display:inline-block;background:linear-gradient(180deg,rgba(252,165,0,.30) 0%,rgba(252,165,0,.40) 50%,rgba(252,165,0,.30) 100%);color:#FFD27A;padding:8px 18px;border-radius:999px;font-size:13px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:14px;border:1px solid rgba(252,165,0,.45);box-shadow:inset 0 1px 0 rgba(255,235,190,.25),inset 0 -1px 0 rgba(0,0,0,.15)}
-.hero h1{margin-bottom:22px}
-.hero .oneliner{font-size:clamp(19px,2.2vw,24px);color:rgba(255,255,255,.82);font-family:'Source Sans 3',sans-serif;font-weight:500;line-height:1.5;margin:0 auto 14px;max-width:780px}
-.hero .sub{color:rgba(255,255,255,.62);margin-bottom:34px;font-size:17px}
-.hero-ctas{display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
-.fade-up{opacity:0;transform:translateY(20px);animation:fadeUp .9s cubic-bezier(.2,.8,.2,1) forwards}
-.fade-up:nth-child(1){animation-delay:.1s}.fade-up:nth-child(2){animation-delay:.25s}.fade-up:nth-child(3){animation-delay:.4s}.fade-up:nth-child(4){animation-delay:.55s}.fade-up:nth-child(5){animation-delay:.7s}
-@keyframes fadeUp{to{opacity:1;transform:translateY(0)}}
-
-.stack-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
-@media(max-width:900px){.stack-grid{grid-template-columns:1fr}}
-.stack-card{background:var(--card-light);border-radius:14px;padding:36px;box-shadow:0 1px 3px rgba(0,0,0,.06);transition:transform .3s,box-shadow .3s;border:1px solid rgba(0,0,0,.04)}
-.stack-card:hover{transform:translateY(-4px);box-shadow:0 16px 40px rgba(0,0,0,.08)}
-.stack-card .icon{width:52px;height:52px;color:var(--accent);margin-bottom:22px}
-.stack-card .big{font-family:'Fraunces',serif;font-size:30px;color:var(--text-dark);margin-bottom:10px;line-height:1.2}
-.stack-card p{color:var(--text-muted);font-size:16px;line-height:1.6}
-
-.stakes-group{margin-top:40px}
-.stakes-label{font-size:12px;text-transform:uppercase;letter-spacing:.18em;color:var(--accent);font-weight:700;margin-bottom:16px}
-.stakes-row{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:12px}
-@media(max-width:768px){.stakes-row{grid-template-columns:1fr}}
-.stakes-card{background:var(--card-dark);border:1px solid var(--border-subtle);border-radius:12px;padding:28px;display:flex;gap:16px;align-items:flex-start;transition:transform .25s,border-color .25s}
-.stakes-card:hover{transform:translateY(-3px);border-color:rgba(252,165,0,.35)}
-.stakes-card .x{flex-shrink:0;width:32px;height:32px;border-radius:50%;background:var(--burgundy-tint);color:var(--burgundy);display:flex;align-items:center;justify-content:center}
-.stakes-card .x svg{width:16px;height:16px}
-.stakes-card p{font-size:17px;color:rgba(255,255,255,.88)}
-.stakes-philo{grid-template-columns:1fr}
-.stakes-philo .stakes-card{border:1.5px solid var(--accent);background:rgba(252,165,0,.07);padding:36px}
-.stakes-philo .stakes-card p{font-size:19px;font-style:italic;color:#fff}
-.stakes-philo .x{background:var(--accent-glow);color:var(--accent)}
-
-.success-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:48px}
-@media(max-width:768px){.success-grid{grid-template-columns:1fr}}
-.success-card{background:var(--card-light);border-radius:12px;padding:28px;display:flex;gap:16px;align-items:flex-start;box-shadow:0 1px 3px rgba(0,0,0,.05);transition:transform .25s,box-shadow .25s}
-.success-card:hover{transform:translateY(-3px);box-shadow:0 12px 30px rgba(0,0,0,.08)}
-.success-card .check{flex-shrink:0;width:40px;height:40px;border-radius:50%;background:linear-gradient(180deg,#B37500 0%,#CC8400 12%,#FCB420 38%,#FFD27A 52%,#E59600 78%,#B37500 100%);color:#2A1F0E;display:flex;align-items:center;justify-content:center;border:1px solid #B37500;box-shadow:inset 0 1px 0 rgba(255,230,180,.4),inset 0 -1px 0 rgba(0,0,0,.25),0 2px 6px rgba(252,165,0,.25)}
-.success-card .check svg{width:18px;height:18px;stroke-width:2.4;filter:drop-shadow(0 1px 0 rgba(255,235,190,.4))}
-.success-card p{font-size:17px}
-
-.guide-grid{display:grid;grid-template-columns:1fr 1fr;gap:40px;margin-top:48px;align-items:start}
-@media(max-width:900px){.guide-grid{grid-template-columns:1fr}}
-.guide-col{background:var(--card-dark);border:1px solid var(--border-subtle);border-radius:14px;padding:40px}
-.guide-col h4{font-family:'Fraunces',serif;font-size:26px;margin-bottom:18px;color:var(--accent);font-weight:400}
-.guide-col p{color:rgba(255,255,255,.82);font-size:17px}
-.comp-list{list-style:none;margin-top:8px}
-.comp-list li{display:flex;gap:14px;align-items:flex-start;padding:14px 0;border-bottom:1px solid var(--border-subtle)}
-.comp-list li:last-child{border-bottom:0}
-.comp-list .ic{width:28px;height:28px;flex-shrink:0;color:var(--accent)}
-.comp-list span{color:rgba(255,255,255,.9);font-size:16px}
-
-.social-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:48px}
-@media(max-width:900px){.social-grid{grid-template-columns:1fr}}
-.tcard{background:var(--card-light);border-radius:14px;padding:36px;box-shadow:0 1px 3px rgba(0,0,0,.06);transition:transform .25s,box-shadow .25s}
-.tcard:hover{transform:translateY(-4px);box-shadow:0 16px 40px rgba(0,0,0,.08)}
-.tcard .q{font-family:'Fraunces',serif;font-size:64px;color:var(--burgundy);opacity:.45;line-height:.8;display:block;margin-bottom:8px}
-.tcard p{font-style:italic;color:var(--text-dark);font-size:17px;line-height:1.6}
-.tcard .author{display:block;text-align:right;margin-top:18px;color:var(--text-muted);font-size:14px;letter-spacing:.08em}
-
-.plan-wrap{margin-top:56px;position:relative}
-.plan-steps{display:grid;grid-template-columns:repeat(3,1fr);gap:32px;position:relative}
-@media(max-width:900px){.plan-steps{grid-template-columns:1fr}}
-.plan-line{position:absolute;top:28px;left:14%;right:14%;height:2px;border-top:2px dashed rgba(255,255,255,.15);z-index:0}
-@media(max-width:900px){.plan-line{display:none}}
-.step{text-align:center;padding:0 12px;position:relative;z-index:1}
-.step-num{width:56px;height:56px;border-radius:50%;background:linear-gradient(180deg,#B37500 0%,#CC8400 12%,#FCB420 38%,#FFD27A 52%,#E59600 78%,#B37500 100%);color:#2A1F0E;display:flex;align-items:center;justify-content:center;font-family:'Fraunces',serif;font-size:26px;font-weight:600;margin:0 auto 22px;border:1px solid #B37500;box-shadow:inset 0 1px 0 rgba(255,230,180,.4),inset 0 -1px 0 rgba(0,0,0,.25),0 0 0 8px var(--bg-dark),0 4px 12px rgba(252,165,0,.3);text-shadow:0 1px 0 rgba(255,235,190,.4)}
-.step h4{font-family:'Fraunces',serif;font-size:24px;margin-bottom:10px;font-weight:400}
-.step p{color:rgba(255,255,255,.65);font-size:16px}
-
-.explanatory{text-align:center;max-width:760px;margin:0 auto}
-.explanatory p{margin-top:24px;color:rgba(255,255,255,.85);font-size:18px}
-
-.leadgen{background:linear-gradient(135deg,var(--bg-dark-alt) 0%,#2a2038 60%,#3A2A00 100%);color:#fff}
-.leadgen .inner{max-width:720px;margin:0 auto;text-align:center}
-.leadgen h3{color:rgba(255,255,255,.75);margin-bottom:20px}
-.leadgen p.lead{color:rgba(255,255,255,.85);margin-bottom:28px;font-size:18px}
-.lead-form{display:flex;gap:12px;max-width:520px;margin:0 auto;flex-wrap:wrap}
-.lead-form input{flex:1;min-width:220px;padding:16px 20px;border-radius:8px;border:1px solid rgba(255,255,255,.15);background:rgba(255,255,255,.06);color:#fff;font-size:16px;font-family:inherit}
-.lead-form input::placeholder{color:rgba(255,255,255,.5)}
-.lead-note{margin-top:16px;color:rgba(255,255,255,.5);font-size:13px}
-
-footer{background:var(--bg-dark);color:#fff;padding:72px 0 36px;content-visibility:auto;contain-intrinsic-size:1px 400px}
-.foot-grid{display:grid;grid-template-columns:1.2fr 1fr 1fr 1fr;gap:32px;margin-bottom:40px}
-@media(max-width:768px){.foot-grid{grid-template-columns:1fr 1fr}.foot-grid>div:first-child{grid-column:1/-1}}
-.foot-grid img{height:96px;width:96px;border-radius:16px;object-fit:cover;margin-bottom:20px}
-.foot-grid h5{font-size:12px;text-transform:uppercase;letter-spacing:.14em;color:var(--accent);margin-bottom:16px;font-weight:700}
-.foot-grid ul{list-style:none;display:flex;flex-direction:column;gap:10px}
-.foot-grid a{color:rgba(255,255,255,.7);font-size:15px;transition:color .2s}
-.foot-grid a:hover{color:#fff}
-.copy{text-align:center;padding-top:28px;border-top:1px solid var(--border-subtle);color:rgba(255,255,255,.5);font-size:14px}
-
-a:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:4px}
-.reveal{opacity:0;transform:translateY(28px);transition:opacity .7s ease,transform .7s ease}
-.reveal.revealed{opacity:1;transform:translateY(0)}
-@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}.reveal{opacity:1;transform:none}.fade-up{opacity:1;transform:none;animation:none}}
-
-/* MOBILE POLISH — modern phones (iPhone 14 Pro / Galaxy S23) */
-p,li,span{overflow-wrap:break-word;-webkit-hyphens:auto;hyphens:auto}
-h1,h2,h3,h4{overflow-wrap:break-word;-webkit-hyphens:none;hyphens:none;text-wrap:balance}
-.hero h1{line-height:1.1}
-@media(max-width:600px){
-  section{padding:56px 0}
-  .sec-head{margin-bottom:40px}
-  .hero{padding:96px 0 56px}
-  .hero-ctas{flex-direction:column;gap:12px;width:100%;max-width:340px;margin:0 auto}
-  .hero-ctas a{width:100%;text-align:center}
-  .cta-primary{padding:15px 24px;font-size:16px}
-  .cta-ghost{padding:13px 24px;font-size:15px}
-  .pill{font-size:11px;padding:6px 14px}
-  .nav-inner{padding:0 20px}
-  .nav-logo img{height:48px;width:48px}
-  .stack-card,.guide-col{padding:28px 24px}
-  .stack-card .big{font-size:26px}
-  .stakes-card{padding:22px;gap:14px}
-  .stakes-card p{font-size:16px}
-  .stakes-philo .stakes-card{padding:28px}
-  .stakes-philo .stakes-card p{font-size:17px}
-  .success-card{padding:22px;gap:14px}
-  .success-card p{font-size:16px}
-  .success-card .check{width:36px;height:36px}
-  .tcard{padding:28px 24px}
-  .tcard p{font-size:16px}
-  .tcard .q{font-size:54px}
-  .plan-steps{gap:48px}
-  .step-num{width:52px;height:52px;font-size:24px;box-shadow:inset 0 1px 0 rgba(255,230,180,.4),inset 0 -1px 0 rgba(0,0,0,.25),0 0 0 6px var(--bg-dark),0 4px 12px rgba(252,165,0,.3)}
-  .step h4{font-size:22px}
-  .step p{font-size:15px}
-  .leadgen h2{font-size:30px}
-  .lead-form{flex-direction:column}
-  .lead-form input{width:100%;min-width:0}
-  .lead-form button{width:100%}
-  .foot-grid{grid-template-columns:1fr 1fr;gap:28px}
-  .foot-grid img{height:72px;width:72px}
-}
-
-/* Ultra-small phones (iPhone SE, older Android) */
-@media(max-width:380px){
-  .container{padding:0 18px}
-  .hero{padding:88px 0 48px}
-  h1{font-size:clamp(30px,8.5vw,38px)}
-  .hero .oneliner{font-size:17px}
-  .hero .sub{font-size:15px}
-  .stack-card{padding:24px 20px}
-  .foot-grid{grid-template-columns:1fr}
-  .foot-grid>div:first-child{grid-column:1/-1}
-}
-
-/* Fallback for browsers without env() / dvh / clamp support */
-@supports not (padding:env(safe-area-inset-top)){
-  .nav{padding-top:16px}
-  .container{padding:0 24px}
-}
-@supports not (min-height:100dvh){
-  .hero{min-height:100vh}
-}
-
-/* Touch device hover-off: prevent sticky hover states on tap */
-@media(hover:none){
-  .stack-card:hover,.tcard:hover,.stakes-card:hover,.success-card:hover{transform:none}
-  .cta-primary:hover{transform:none}
-}
-
-/* Spotify section */
-.spotify-card{max-width:700px;margin:0 auto;background:var(--card-light);border-radius:16px;padding:36px;box-shadow:0 2px 12px rgba(0,0,0,.07);border:1px solid rgba(0,0,0,.04)}
-.spotify-card iframe{border-radius:12px;margin-bottom:20px}
-.spotify-link{display:inline-block;margin-top:8px;color:#1DB954;font-weight:600;font-size:16px;transition:color .2s}
-.spotify-link:hover{color:#1aa34a}
-
-/* Google mock form */
-.google-form-card{max-width:480px;margin:32px auto 0;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:16px;padding:44px 40px;text-align:left;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
-.google-form-card h4{font-family:'Fraunces',serif;font-size:28px;color:#fff;margin-bottom:6px;font-weight:400;text-align:center}
-.google-form-card .gf-sub{color:rgba(255,255,255,.6);font-size:15px;text-align:center;margin-bottom:28px}
-.google-form-card label{display:block;font-size:13px;font-weight:600;color:rgba(255,255,255,.7);margin-bottom:6px;text-transform:uppercase;letter-spacing:.06em}
-.google-form-card input{width:100%;padding:14px 16px;border:1px solid rgba(255,255,255,.15);border-radius:8px;font-size:16px;font-family:inherit;color:#fff;background:rgba(255,255,255,.05);transition:border-color .2s,box-shadow .2s}
-.google-form-card input::placeholder{color:rgba(255,255,255,.35)}
-.google-form-card input:focus{border-color:var(--accent);outline:none;box-shadow:0 0 0 3px var(--accent-glow)}
-.google-form-card .gf-field{margin-bottom:20px}
-.google-btn{width:100%;padding:15px;background:linear-gradient(180deg,#B37500 0%,#CC8400 8%,#FFB733 28%,#FFD27A 42%,#FCB420 55%,#D98E00 75%,#B37500 95%,#9A6500 100%);color:#2A1F0E;border:1px solid #B37500;border-radius:8px;font-size:16px;font-weight:700;cursor:pointer;font-family:inherit;transition:transform .2s,box-shadow .2s,filter .2s;box-shadow:inset 0 1px 0 rgba(255,230,180,.35),inset 0 -1px 0 rgba(0,0,0,.25),0 2px 8px rgba(252,165,0,.25);text-shadow:0 1px 0 rgba(255,235,190,.4)}
-.google-btn:hover{transform:translateY(-2px);box-shadow:inset 0 1px 0 rgba(255,235,190,.5),inset 0 -1px 0 rgba(0,0,0,.2),0 6px 20px rgba(252,165,0,.4);filter:brightness(1.04)}
-.google-btn:active{transform:translateY(0);filter:brightness(.92)}
-.gf-divider{display:flex;align-items:center;gap:14px;margin:22px 0;color:rgba(255,255,255,.4);font-size:13px;text-transform:uppercase;letter-spacing:.1em}
-.gf-divider::before,.gf-divider::after{content:'';flex:1;height:1px;background:rgba(255,255,255,.12)}
-.google-form-card .lead-form{max-width:100%;gap:10px}
-.google-form-card .lead-form input{border:1px solid rgba(255,255,255,.15);background:rgba(255,255,255,.05);color:#fff}
-.google-form-card .lead-form input::placeholder{color:rgba(255,255,255,.35)}
-.google-form-card .lead-form input:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-glow)}
-.gf-success{text-align:center;padding:36px 0;display:none}
-.gf-success .gf-check{font-size:52px;color:var(--accent);margin-bottom:14px;display:block}
-.gf-success p{font-size:20px;color:#fff;font-weight:500}
-.gf-success .gf-note{font-size:14px;color:rgba(255,255,255,.5);margin-top:10px;font-weight:400}
-@media(max-width:600px){
-  .spotify-card{padding:24px 20px}
-  .google-form-card{padding:32px 24px;margin:32px 0 0}
-}
-</style>
+<link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
 <nav class="nav" id="nav" aria-label="Główna nawigacja">
   <div class="nav-inner">
-    <a href="#top" class="nav-logo" aria-label="Czempion English"><img src="czempion_color_logo.webp" alt="Czempion English" width="56" height="56" decoding="async"></a>
+    <a href="#top" class="nav-logo" aria-label="Czempion English"><img src="czempion_color_logo.webp" alt="Czempion English" width="52" height="52" decoding="async"></a>
     <ul class="nav-links">
-      <li><a href="#stakes">Wyzwania</a></li>
       <li><a href="#guide">Metoda</a></li>
       <li><a href="#social">Opinie</a></li>
-      <li><a href="#podcast">Podcast</a></li>
-      <li><a href="#plan">Jak zacząć</a></li>
+      <li><a href="baza-wiedzy.html">Baza wiedzy</a></li>
+      <li><a href="sklep.html">Sklep</a></li>
       <li><a href="#kontakt">Kontakt</a></li>
     </ul>
-    <a href="#kontakt" class="cta-primary nav-cta">Umów bezpłatną konsultację</a>
+    <a href="#kontakt" class="cta-primary nav-cta">Umów konsultację</a>
     <button class="burger" id="burger" aria-label="Otwórz menu" aria-expanded="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
   </div>
 </nav>
 
 <header class="hero" id="top">
   <div class="container hero-inner">
-    <span class="pill fade-up">W 3–4 miesiące</span>
+    <span class="pill fade-up">W 3-4 miesiące</span>
     <h1 class="fade-up">Mów po angielsku.<br>Z pewnością siebie.</h1>
-    <p class="oneliner fade-up">Pomagamy dorosłym, którzy latami walczyli z angielskim — zacząć mówić w 3–4 miesiące. W pracy. W podróży. W życiu.</p>
+    <p class="oneliner fade-up">Pomagamy dorosłym, którzy latami walczyli z angielskim, zacząć mówić w 3-4 miesiące. W pracy. W podróży. W życiu.</p>
     <p class="sub fade-up">Bez wkuwania. Bez wstydu. Przez logikę języka.</p>
     <div class="hero-ctas fade-up">
       <a href="#kontakt" class="cta-primary">Umów bezpłatną konsultację</a>
@@ -288,13 +51,13 @@ h1,h2,h3,h4{overflow-wrap:break-word;-webkit-hyphens:none;hyphens:none;text-wrap
     <div class="stack-grid">
       <article class="stack-card reveal">
         <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M3 20h18M5 20V10M10 20V6M15 20V13M20 20V4M17 7l3-3M20 4h-3"/></svg>
-        <div class="big">+1 poziom w 3–4 miesiące</div>
-        <p>Mierzalny, konkretny postęp. U nas to nie obietnica — to standard.</p>
+        <div class="big">+1 poziom w 3-4 miesiące</div>
+        <p>Mierzalny, konkretny postęp. U nas to nie obietnica, to standard.</p>
       </article>
       <article class="stack-card reveal">
         <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M12 2a7 7 0 00-4 12.7V17a2 2 0 002 2h4a2 2 0 002-2v-2.3A7 7 0 0012 2zM10 22h4M12 6v4"/></svg>
         <div class="big">Logika zamiast pamięci</div>
-        <p>Rozumiesz, DLACZEGO język działa tak, a nie inaczej. Gramatyka przestaje być zagadką — staje się narzędziem.</p>
+        <p>Rozumiesz, DLACZEGO język działa tak, a nie inaczej. Gramatyka przestaje być zagadką, staje się narzędziem.</p>
       </article>
       <article class="stack-card reveal">
         <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M10 3H5a2 2 0 00-2 2v5h3a2 2 0 110 4H3v5a2 2 0 002 2h5v-3a2 2 0 114 0v3h5a2 2 0 002-2v-5h-3a2 2 0 110-4h3V5a2 2 0 00-2-2h-5v3a2 2 0 11-4 0V3z"/></svg>
@@ -315,20 +78,20 @@ h1,h2,h3,h4{overflow-wrap:break-word;-webkit-hyphens:none;hyphens:none;text-wrap
     <div class="stakes-group reveal">
       <div class="stakes-row">
         <div class="stakes-card"><span class="x"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 6l12 12M6 18L18 6"/></svg></span><p>Wkuwasz tabelki gramatyczne, ale w rozmowie na żywo wszystko wyparowuje z głowy.</p></div>
-        <div class="stakes-card"><span class="x"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 6l12 12M6 18L18 6"/></svg></span><p>Masz streak 500 dni na Duolingo — i wciąż nie umiesz zamówić kawy bez stresu.</p></div>
+        <div class="stakes-card"><span class="x"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 6l12 12M6 18L18 6"/></svg></span><p>Masz streak 500 dni na Duolingo, a wciąż nie umiesz zamówić kawy bez stresu.</p></div>
       </div>
     </div>
 
-<div class="stakes-group reveal" style="margin-top:40px">
+    <div class="stakes-group reveal" style="margin-top:40px">
       <div class="stakes-row">
-        <div class="stakes-card"><span class="x"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 6l12 12M6 18L18 6"/></svg></span><p>Na spotkaniu po angielsku milczysz — nie dlatego, że nie masz co powiedzieć, tylko dlatego, że boisz się, jak to zabrzmi.</p></div>
+        <div class="stakes-card"><span class="x"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 6l12 12M6 18L18 6"/></svg></span><p>Na spotkaniu po angielsku milczysz, nie dlatego, że nie masz co powiedzieć, tylko dlatego, że boisz się, jak to zabrzmi.</p></div>
         <div class="stakes-card"><span class="x"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 6l12 12M6 18L18 6"/></svg></span><p>Masz wrażenie, że przez barierę językową jesteś odbierany jako mniej kompetentny, niż jesteś naprawdę.</p></div>
       </div>
     </div>
 
     <div class="stakes-group reveal">
       <div class="stakes-row stakes-philo">
-        <div class="stakes-card"><span class="x"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2v20"/></svg></span><p>Po latach nauki wciąż nie potrafić powiedzieć tego, co naprawdę myślisz — to nie powinno się zdarzyć nikomu, kto dał temu językowi tyle swojego czasu.</p></div>
+        <div class="stakes-card"><span class="x"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2v20"/></svg></span><p>Po latach nauki wciąż nie potrafić powiedzieć tego, co naprawdę myślisz. To nie powinno się zdarzyć nikomu, kto dał temu językowi tyle swojego czasu.</p></div>
       </div>
     </div>
   </div>
@@ -341,12 +104,12 @@ h1,h2,h3,h4{overflow-wrap:break-word;-webkit-hyphens:none;hyphens:none;text-wrap
       <h3>Tak wygląda życie po trzech miesiącach z dobrą metodą.</h3>
     </div>
     <div class="success-grid">
-      <div class="success-card reveal"><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 12l5 5L20 6"/></svg></span><p>Prowadzisz rozmowę kwalifikacyjną po angielsku — i wychodzisz z ofertą, której bałeś się nawet aplikować.</p></div>
-      <div class="success-card reveal"><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 12l5 5L20 6"/></svg></span><p>Na spotkaniu z zagranicznym klientem mówisz swobodnie — bez kartki, bez potu, bez „sorry, my English is bad".</p></div>
+      <div class="success-card reveal"><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 12l5 5L20 6"/></svg></span><p>Prowadzisz rozmowę kwalifikacyjną po angielsku i wychodzisz z ofertą, której bałeś się nawet aplikować.</p></div>
+      <div class="success-card reveal"><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 12l5 5L20 6"/></svg></span><p>Na spotkaniu z zagranicznym klientem mówisz swobodnie, bez kartki, bez potu, bez „sorry, my English is bad".</p></div>
       <div class="success-card reveal"><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 12l5 5L20 6"/></svg></span><p>Oglądasz serial w oryginale i łapiesz żarty, których w napisach po prostu nie ma.</p></div>
-      <div class="success-card reveal"><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 12l5 5L20 6"/></svg></span><p>Gramatyka jest Twoim narzędziem — nie więzieniem. Używasz jej intuicyjnie, bo rozumiesz, jak działa.</p></div>
+      <div class="success-card reveal"><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 12l5 5L20 6"/></svg></span><p>Gramatyka jest Twoim narzędziem, nie więzieniem. Używasz jej intuicyjnie, bo rozumiesz, jak działa.</p></div>
     </div>
-    <div class="cta-wrap reveal"><a href="#kontakt" class="cta-primary">Tak chcę mówić — umów konsultację</a></div>
+    <div class="cta-wrap reveal"><a href="#kontakt" class="cta-primary">Tak chcę mówić. Umów konsultację</a></div>
   </div>
 </section>
 
@@ -357,14 +120,14 @@ h1,h2,h3,h4{overflow-wrap:break-word;-webkit-hyphens:none;hyphens:none;text-wrap
       <div class="guide-col reveal">
         <h4>Empatia</h4>
         <p>Tradycyjna szkoła kazała Ci wkuwać tabelki i powtarzać zdania jak papuga. Potem przyszły apki, które zamieniły ten sam model w grę z punktami. Robisz to latami. Efektu wciąż nie widać.</p>
-        <p style="margin-top:14px">To nie Ty jesteś „niejęzykowy". To metoda jest zepsuta — nie Ty. System, w którym uczono Cię angielskiego, był zaprojektowany pod testy, oceny i streaki. Nie pod to, żebyś potrafił powiedzieć coś drugiemu człowiekowi.</p>
+        <p style="margin-top:14px">To nie Ty jesteś „niejęzykowy". To metoda jest zepsuta, nie Ty. System, w którym uczono Cię angielskiego, był zaprojektowany pod testy, oceny i streaki. Nie pod to, żebyś potrafił powiedzieć coś drugiemu człowiekowi.</p>
       </div>
       <div class="guide-col reveal">
         <h4>Kompetencja</h4>
         <ul class="comp-list">
-          <li><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="4"/><path d="M4 21v-1a6 6 0 016-6h4a6 6 0 016 6v1"/></svg><span>Setki dorosłych uczniów, którzy w 3–4 miesiące podnieśli swój poziom o minimum jeden stopień.</span></li>
-          <li><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2a7 7 0 00-4 12.7V17a2 2 0 002 2h4a2 2 0 002-2v-2.3A7 7 0 0012 2z"/></svg><span>Autorska metoda oparta na logice języka — nie na wkuwaniu ani na gamifikacji.</span></li>
-          <li><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2l2.5 5.5L20 9l-4 4 1 6-5-3-5 3 1-6-4-4 5.5-1.5L12 2z"/></svg><span>Indywidualny plan, który ewoluuje razem z Tobą — bo Twoje cele to nie cele grupy.</span></li>
+          <li><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="4"/><path d="M4 21v-1a6 6 0 016-6h4a6 6 0 016 6v1"/></svg><span>Setki dorosłych uczniów, którzy w 3-4 miesiące podnieśli swój poziom o minimum jeden stopień.</span></li>
+          <li><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2a7 7 0 00-4 12.7V17a2 2 0 002 2h4a2 2 0 002-2v-2.3A7 7 0 0012 2z"/></svg><span>Autorska metoda oparta na logice języka, nie na wkuwaniu ani na gamifikacji.</span></li>
+          <li><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2l2.5 5.5L20 9l-4 4 1 6-5-3-5 3 1-6-4-4 5.5-1.5L12 2z"/></svg><span>Indywidualny plan, który ewoluuje razem z Tobą, bo Twoje cele to nie cele grupy.</span></li>
         </ul>
       </div>
     </div>
@@ -375,9 +138,9 @@ h1,h2,h3,h4{overflow-wrap:break-word;-webkit-hyphens:none;hyphens:none;text-wrap
   <div class="container">
     <div class="sec-head reveal"><h2>Nie wierz nam na słowo.</h2><h3>Posłuchaj tych, którzy już przeszli tę drogę.</h3></div>
     <div class="social-grid">
-      <article class="tcard reveal"><span class="q">&ldquo;</span><p>Uczyłam się angielskiego 10 lat — szkoła, kursy, potem apki. Wciąż bałam się odezwać. Po 3 miesiącach w Czempion English prowadzę rozmowy w pracy. Bez stresu. Pierwszy raz czuję, że rozumiem ten język, a nie tylko go pamiętam.</p><span class="author">— A.K.</span></article>
-      <article class="tcard reveal"><span class="q">&ldquo;</span><p>Pierwszy raz ktoś wytłumaczył mi, DLACZEGO angielska gramatyka działa tak, a nie inaczej. Przestałem wkuwać — zacząłem rozumieć. To jest różnica między nauką a edukacją.</p><span class="author">— M.W.</span></article>
-      <article class="tcard reveal"><span class="q">&ldquo;</span><p>Myślałem, że mam blokadę językową. Latami obwiniałem siebie. Okazało się, że problem był w metodzie, nie we mnie.</p><span class="author">— P.S.</span></article>
+      <article class="tcard reveal"><span class="q">&ldquo;</span><p>Uczyłam się angielskiego 10 lat: szkoła, kursy, potem apki. Wciąż bałam się odezwać. Po 3 miesiącach w Czempion English prowadzę rozmowy w pracy. Bez stresu. Pierwszy raz czuję, że rozumiem ten język, a nie tylko go pamiętam.</p><span class="author">A.K.</span></article>
+      <article class="tcard reveal"><span class="q">&ldquo;</span><p>Pierwszy raz ktoś wytłumaczył mi, DLACZEGO angielska gramatyka działa tak, a nie inaczej. Przestałem wkuwać, zacząłem rozumieć. To jest różnica między nauką a edukacją.</p><span class="author">M.W.</span></article>
+      <article class="tcard reveal"><span class="q">&ldquo;</span><p>Myślałem, że mam blokadę językową. Latami obwiniałem siebie. Okazało się, że problem był w metodzie, nie we mnie.</p><span class="author">P.S.</span></article>
     </div>
   </div>
 </section>
@@ -386,11 +149,11 @@ h1,h2,h3,h4{overflow-wrap:break-word;-webkit-hyphens:none;hyphens:none;text-wrap
   <div class="container">
     <div class="sec-head reveal">
       <h2>Posłuchaj naszego podcastu</h2>
-      <h3>Czempion English — nic na pamięć, wszystko na rozum</h3>
+      <h3>Czempion English: nic na pamięć, wszystko na rozum</h3>
     </div>
     <div class="spotify-card reveal">
       <iframe src="https://open.spotify.com/embed/episode/2Nm1fC2tRG270K0Gdw5Csy?utm_source=generator&theme=0" width="100%" height="352" frameBorder="0" allowfullscreen allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
-      <a href="https://open.spotify.com/episode/2Nm1fC2tRG270K0Gdw5Csy" target="_blank" rel="noopener" class="spotify-link">Słuchaj na Spotify &rarr;</a>
+      <a href="https://open.spotify.com/episode/2Nm1fC2tRG270K0Gdw5Csy" target="_blank" rel="noopener" class="spotify-link">Słuchaj na Spotify →</a>
     </div>
   </div>
 </section>
@@ -403,19 +166,19 @@ h1,h2,h3,h4{overflow-wrap:break-word;-webkit-hyphens:none;hyphens:none;text-wrap
       <div class="plan-steps">
         <div class="step"><div class="step-num">1</div><h4>Porozmawiaj z nami</h4><p>Bezpłatna konsultacja: określimy Twój poziom, cele i plan. Zero zobowiązań, zero sprzedaży pod presją.</p></div>
         <div class="step"><div class="step-num">2</div><h4>Zacznij swój program</h4><p>Nauka oparta na logice języka, skrojona pod Ciebie. Regularne sesje. Realne postępy od pierwszego tygodnia.</p></div>
-        <div class="step"><div class="step-num">3</div><h4>Mów z pewnością siebie</h4><p>W 3–4 miesiące poczujesz różnicę. Ty, Twoi współpracownicy i Twoja kariera to odczujecie.</p></div>
+        <div class="step"><div class="step-num">3</div><h4>Mów z pewnością siebie</h4><p>W 3-4 miesiące poczujesz różnicę. Ty, Twoi współpracownicy i Twoja kariera to odczujecie.</p></div>
       </div>
     </div>
-    <div class="cta-wrap reveal"><a href="#kontakt" class="cta-primary">Zacznij od kroku 1 — umów konsultację</a></div>
+    <div class="cta-wrap reveal"><a href="#kontakt" class="cta-primary">Zacznij od kroku 1: umów konsultację</a></div>
   </div>
 </section>
 
 <section class="dark" style="background:var(--bg-dark-alt)">
   <div class="container explanatory reveal">
     <h2>Tradycyjna nauka angielskiego jest zepsuta. Oto dlaczego.</h2>
-    <p>Od dekad uczą Cię w ten sam sposób: tabelki, regułki, wkuwanie na pamięć. Potem przyszły apki, które zamieniły ten sam model w grę z punktami i streakami. Forma się zmieniła — treść nie.</p>
-    <p>Ale język to nie zbiór formułek. Język to żywe narzędzie do komunikacji z drugim człowiekiem. W Czempion English odwracamy podejście. Zamiast kazać Ci zapamiętywać, pokazujemy logikę stojącą za językiem. Kiedy rozumiesz, DLACZEGO coś działa tak, a nie inaczej — zapamiętywanie staje się zbędne.</p>
-    <p>To dlatego nasi uczniowie robią w 3 miesiącach postępy, na które inni czekają latami. Nie dlatego, że są mądrzejsi. Dlatego, że w końcu ktoś im pokazał, jak ten język naprawdę działa.</p>
+    <p>Od dekad uczą Cię w ten sam sposób: tabelki, regułki, wkuwanie na pamięć. Potem przyszły apki, które zamieniły ten sam model w grę z punktami i streakami. Forma się zmieniła, treść nie.</p>
+    <p>Ale język to nie zbiór formułek. Język to żywe narzędzie do komunikacji z drugim człowiekiem. W Czempion English odwracamy podejście. Zamiast kazać Ci zapamiętywać, pokazujemy logikę stojącą za językiem. Kiedy rozumiesz, DLACZEGO coś działa tak, a nie inaczej, zapamiętywanie staje się zbędne.</p>
+    <p>To dlatego nasi uczniowie robią w 3 miesiącach postępy, na które inni czekają latami. Nie dlatego, że są mądrzejsi, tylko dlatego, że w końcu ktoś im pokazał, jak ten język naprawdę działa.</p>
     <div class="cta-wrap"><a href="#kontakt" class="cta-primary">Zobacz, jak to wygląda u Ciebie</a></div>
   </div>
 </section>
@@ -423,34 +186,29 @@ h1,h2,h3,h4{overflow-wrap:break-word;-webkit-hyphens:none;hyphens:none;text-wrap
 <section class="leadgen">
   <div class="container inner reveal">
     <h2>Nie jesteś jeszcze gotowy? To OK.</h2>
-    <h3>Zacznij od tego — za darmo.</h3>
-    <p class="lead">Pobierz nasz przewodnik: <em>«5 powodów, dlaczego Twój angielski stoi w miejscu — i jak to zmienić»</em></p>
+    <h3>Zacznij od tego. Za darmo.</h3>
+    <p class="lead">Pobierz nasz przewodnik: «5 powodów, dlaczego Twój angielski stoi w miejscu, i jak to zmienić».</p>
 
-    <div class="google-form-card" id="googleForm">
-      <div id="gfFormContent">
-        <h4>Zapisz się</h4>
-        <p class="gf-sub">Otrzymaj darmowy przewodnik na email</p>
-        <form onsubmit="event.preventDefault();document.getElementById('gfFormContent').style.display='none';document.getElementById('gfSuccess').style.display='block';">
-          <div class="gf-field">
-            <label for="gf-name">Imię</label>
-            <input type="text" id="gf-name" placeholder="Jan" required>
+    <div class="lead-card" data-lead>
+      <div class="lead-form-wrap">
+        <h4>Pobierz przewodnik</h4>
+        <p class="lf-sub">Wpisz dane, a wyślemy go na Twój email.</p>
+        <form onsubmit="event.preventDefault(); handleLead(this);">
+          <div class="lead-field">
+            <label for="lead-name">Imię</label>
+            <input id="lead-name" name="name" type="text" placeholder="Jan" required>
           </div>
-          <div class="gf-field">
-            <label for="gf-email">Email</label>
-            <input type="email" id="gf-email" placeholder="jan@gmail.com" required>
+          <div class="lead-field">
+            <label for="lead-email">Email</label>
+            <input id="lead-email" name="email" type="email" placeholder="jan@gmail.com" required>
           </div>
-          <button type="submit" class="google-btn">Zapisz się przez Google</button>
-        </form>
-        <div class="gf-divider">lub</div>
-        <form class="lead-form" onsubmit="event.preventDefault();document.getElementById('gfFormContent').style.display='none';document.getElementById('gfSuccess').style.display='block';" style="max-width:100%">
-          <input type="email" placeholder="Twój adres email" required aria-label="Twój adres email">
-          <button type="submit" class="cta-primary">Wyślij mi przewodnik</button>
+          <button type="submit" class="cta-primary full">Wyślij mi przewodnik</button>
         </form>
       </div>
-      <div class="gf-success" id="gfSuccess">
-        <span class="gf-check">&#10003;</span>
+      <div class="lead-success">
+        <span class="lf-check">✓</span>
         <p>Zapisano!</p>
-        <p class="gf-note">Sprawdź swoją skrzynkę email.</p>
+        <p class="lf-note">Sprawdź swoją skrzynkę email.</p>
       </div>
     </div>
 
@@ -464,36 +222,28 @@ h1,h2,h3,h4{overflow-wrap:break-word;-webkit-hyphens:none;hyphens:none;text-wrap
   <div class="container">
     <div class="foot-grid">
       <div>
-        <img src="czempion_color_logo.webp" alt="Czempion English" width="96" height="96" loading="lazy" decoding="async">
-        <p style="color:rgba(255,255,255,.6);font-size:15px;max-width:280px">Nauka angielskiego przez logikę i zrozumienie. +1 poziom w 3–4 miesiące.</p>
+        <img src="czempion_color_logo.webp" alt="Czempion English" width="88" height="88" loading="lazy" decoding="async">
+        <p style="color:rgba(255,255,255,.6);font-size:15px;max-width:280px">Nauka angielskiego przez logikę i zrozumienie. +1 poziom w 3-4 miesiące.</p>
       </div>
       <div><h5>Kontakt</h5><ul>
-        <li><a href="mailto:kontakt@czempionenglish.pl">kontakt@czempionenglish.pl</a></li>
+        <li><a href="mailto:czempionenglish@gmail.com">czempionenglish@gmail.com</a></li>
         <li><a href="https://instagram.com/czempion_english" target="_blank" rel="noopener">Instagram: @czempion_english</a></li>
       </ul></div>
-      <div><h5>Nawigacja</h5><ul>
-        <li><a href="#guide">O nas</a></li><li><a href="#guide">Metoda</a></li><li><a href="#social">Opinie</a></li><li><a href="#">FAQ</a></li>
+      <div><h5>Strona</h5><ul>
+        <li><a href="#guide">Metoda</a></li>
+        <li><a href="#social">Opinie</a></li>
+        <li><a href="baza-wiedzy.html">Baza wiedzy</a></li>
+        <li><a href="sklep.html">Sklep</a></li>
       </ul></div>
       <div><h5>Prawne</h5><ul>
-        <li><a href="#">Polityka prywatności</a></li><li><a href="#">Regulamin</a></li>
+        <li><a href="#">Polityka prywatności</a></li>
+        <li><a href="#">Regulamin</a></li>
       </ul></div>
     </div>
-    <div class="copy">© 2025 Czempion English. Wszelkie prawa zastrzeżone.</div>
+    <div class="copy">© 2026 Czempion English. Wszelkie prawa zastrzeżone.<a class="foot-admin" href="https://api.czempionenglish.pl/admin">Panel</a></div>
   </div>
 </footer>
 
-<script defer>
-(function(){
-  const nav=document.getElementById('nav');
-  const onScroll=()=>nav.classList.toggle('scrolled',window.scrollY>50);
-  window.addEventListener('scroll',onScroll,{passive:true});onScroll();
-  const b=document.getElementById('burger');
-  b.addEventListener('click',()=>{const o=document.body.classList.toggle('nav-menu-open');b.setAttribute('aria-expanded',o)});
-  document.querySelectorAll('.nav-links a').forEach(a=>a.addEventListener('click',()=>document.body.classList.remove('nav-menu-open')));
-  if(matchMedia('(prefers-reduced-motion: reduce)').matches){document.querySelectorAll('.reveal').forEach(el=>el.classList.add('revealed'));return}
-  const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('revealed');io.unobserve(e.target)}}),{threshold:.15,rootMargin:'0px 0px -5% 0px'});
-  document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
-})();
-</script>
+<script defer src="script.js"></script>
 </body>
 </html>
