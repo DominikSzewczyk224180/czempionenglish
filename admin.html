@@ -48,7 +48,11 @@
         <div class="admin-field"><label>Kategoria</label>
           <select id="kbTag" class="admin-select"><option>PDF</option><option>Wideo</option><option>Ćwiczenia</option><option>Audio</option><option>Inne</option></select>
         </div>
-        <div class="admin-field"><label>Link (opcjonalnie)</label><input id="kbLink" class="admin-input" type="url" placeholder="https://..."></div>
+        <div class="admin-field"><label>Plik: PDF / wideo / audio (opcjonalnie)</label>
+          <input id="kbFile" class="admin-input admin-file" type="file" accept=".pdf,.doc,.docx,.ppt,.pptx,video/*,audio/*,image/*" onchange="onKbFilePick(event)">
+          <div id="kbFileInfo" class="admin-file-info" style="display:none"><span id="kbFileName"></span><button type="button" class="admin-img-remove" onclick="clearKbFile()">Usuń plik</button></div>
+        </div>
+        <div class="admin-field"><label>...albo link do materiału (np. YouTube, Dysk Google)</label><input id="kbLink" class="admin-input" type="url" placeholder="https://..."></div>
         <button class="cta-primary full" id="kbSubmit" onclick="saveKb()">Dodaj materiał</button>
         <button class="admin-cancel" id="kbCancel" style="display:none" onclick="cancelKb()">Anuluj edycję</button>
       </div>
@@ -98,6 +102,8 @@
   let editKb = null;
   let editShop = null;
   let pImgData = "";
+  let kbFileData = "";
+  let kbFileName = "";
 
   /* Treści startowe (te same co na stronie) */
   const KB_DEFAULTS = [
@@ -118,7 +124,13 @@
     read: (k, def) => { try { const r = localStorage.getItem(k); return r === null ? (def || []) : JSON.parse(r); } catch (e) { return def || []; } },
     write: (k, a) => {
       try { localStorage.setItem(k, JSON.stringify(a)); return true; }
-      catch (e) { alert("Ta przeglądarka blokuje zapis lokalny w tym podglądzie. Na wgranej stronie (serwer lub GitHub Pages) zadziała."); return false; }
+      catch (e) {
+        const quota = e && (e.name === "QuotaExceededError" || e.code === 22 || e.code === 1014);
+        alert(quota
+          ? "Pamięć przeglądarki jest pełna (wersja demonstracyjna). Usuń część wgranych plików albo użyj linków zamiast wgrywania. Pełne wgrywanie bez limitu ruszy z backendem."
+          : "Ta przeglądarka blokuje zapis lokalny w tym podglądzie. Na wgranej stronie (serwer lub GitHub Pages) zadziała.");
+        return false;
+      }
     }
   };
   const esc = (s) => String(s == null ? "" : s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
@@ -174,6 +186,31 @@
     const f = document.getElementById("pImgFile"); if (f) f.value = "";
   }
 
+  /* materiał do bazy wiedzy: wgrywanie pliku (PDF/wideo/audio/itd.) */
+  function onKbFilePick(e) {
+    const file = e.target.files && e.target.files[0];
+    if (!file) return;
+    const MAX = 3 * 1024 * 1024; // ~3 MB - limit pamięci przeglądarki w wersji demonstracyjnej
+    if (file.size > MAX) {
+      alert("Ten plik jest za duży na wersję demonstracyjną (pamięć przeglądarki to kilka MB). Filmy i nagrania audio są zwykle za duże, więc na razie wklej zamiast tego link (np. YouTube albo Dysk Google). Pełne wgrywanie plików bez limitu ruszy z backendem.");
+      e.target.value = "";
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = (ev) => {
+      kbFileData = ev.target.result;
+      kbFileName = file.name;
+      document.getElementById("kbFileName").textContent = file.name;
+      document.getElementById("kbFileInfo").style.display = "flex";
+    };
+    reader.readAsDataURL(file);
+  }
+  function clearKbFile() {
+    kbFileData = ""; kbFileName = "";
+    document.getElementById("kbFileInfo").style.display = "none";
+    const f = document.getElementById("kbFile"); if (f) f.value = "";
+  }
+
   /* logowanie */
   function adminLogin() {
     if (document.getElementById("pw").value === "12345") {
@@ -199,7 +236,7 @@
   function saveKb() {
     const title = val("kbTitle");
     if (!title) { document.getElementById("kbTitle").focus(); return; }
-    const item = { title, desc: val("kbDesc"), tag: document.getElementById("kbTag").value, link: val("kbLink") };
+    const item = { title, desc: val("kbDesc"), tag: document.getElementById("kbTag").value, file: kbFileData, fileName: kbFileName, link: val("kbLink") };
     const arr = S.read(KB_KEY, KB_DEFAULTS);
     if (editKb === null) arr.push(item); else arr[editKb] = item;
     S.write(KB_KEY, arr);
@@ -211,6 +248,10 @@
     editKb = i;
     set("kbTitle", it.title); set("kbDesc", it.desc); set("kbLink", it.link);
     document.getElementById("kbTag").value = it.tag || "PDF";
+    kbFileData = it.file || ""; kbFileName = it.fileName || "";
+    document.getElementById("kbFile").value = "";
+    if (kbFileData) { document.getElementById("kbFileName").textContent = kbFileName || "Wgrany plik"; document.getElementById("kbFileInfo").style.display = "flex"; }
+    else document.getElementById("kbFileInfo").style.display = "none";
     document.getElementById("kbSubmit").textContent = "Zapisz zmiany";
     document.getElementById("kbFormLabel").textContent = "Edytuj materiał";
     document.getElementById("kbEditNote").style.display = "flex";
@@ -221,6 +262,7 @@
     editKb = null;
     set("kbTitle", ""); set("kbDesc", ""); set("kbLink", "");
     document.getElementById("kbTag").value = "PDF";
+    clearKbFile();
     document.getElementById("kbSubmit").textContent = "Dodaj materiał";
     document.getElementById("kbFormLabel").textContent = "Dodaj materiał";
     document.getElementById("kbEditNote").style.display = "none";

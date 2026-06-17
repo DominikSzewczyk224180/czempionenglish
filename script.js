@@ -131,8 +131,14 @@ function buyProduct(btn) {
     const items = read(KB_KEY, KB_DEFAULTS);
     kbGrid.innerHTML = items.length
       ? items.map((it) => {
-          const link = it.link
-            ? `<a class="kb-link" href="${esc(it.link)}" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12m0 0l-4-4m4 4l4-4M5 21h14"/></svg> Otwórz</a>`
+          const href = it.file || it.link || "";
+          const labels = { PDF: "Pobierz PDF", Wideo: "Obejrzyj", Audio: "Odsłuchaj", "Ćwiczenia": "Pobierz" };
+          const label = labels[it.tag] || "Otwórz";
+          const attrs = it.file
+            ? `href="${esc(it.file)}" download="${esc(it.fileName || "material")}"`
+            : `href="${esc(it.link)}" target="_blank" rel="noopener"`;
+          const link = href
+            ? `<a class="kb-link" ${attrs}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12m0 0l-4-4m4 4l4-4M5 21h14"/></svg> ${label}</a>`
             : "";
           return `<article class="kb-card reveal revealed"><span class="kb-tag">${esc(it.tag || "Materiał")}</span><h3>${esc(it.title)}</h3><p>${esc(it.desc || "")}</p>${link}</article>`;
         }).join("")

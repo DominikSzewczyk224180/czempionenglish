@@ -397,3 +397,37 @@ main>section.dark{border-top-color:rgba(255,255,255,.09)}
 .admin-img-remove:hover{border-color:var(--danger);color:var(--danger)}
 .admin-file-info{display:flex;align-items:center;gap:12px;margin-top:12px;font-size:13px;color:rgba(255,255,255,.7)}
 .admin-file-info span{word-break:break-all}
+
+/* ===========================================================
+   Hero - wzbogacenie: hook, pływające chipy, statystyki
+   =========================================================== */
+.hero-hook{margin-top:22px;font-size:15px;color:rgba(255,255,255,.5)}
+.hero-hook a{color:var(--accent);font-weight:600;text-decoration:none;border-bottom:1px solid transparent;transition:border-color .2s}
+.hero-hook a:hover{border-bottom-color:var(--accent)}
+
+.hero-chip{position:absolute;z-index:3;display:flex;align-items:center;gap:11px;max-width:240px;background:rgba(17,24,40,.74);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.12);border-radius:14px;padding:12px 14px;box-shadow:0 18px 44px rgba(0,0,0,.45);color:#fff;text-decoration:none;animation:chipFloat 6s ease-in-out infinite;transition:border-color .25s,background .25s}
+.hero-chip:hover{border-color:var(--accent-border);background:rgba(23,32,52,.92)}
+.hero-chip .chip-ico{width:38px;height:38px;flex:0 0 auto;border-radius:10px;background:var(--accent-soft);color:var(--accent);display:flex;align-items:center;justify-content:center}
+.hero-chip .chip-ico svg{width:20px;height:20px}
+.hero-chip .chip-txt strong{display:block;font-size:14px;font-weight:700;line-height:1.2}
+.hero-chip .chip-txt em{display:block;font-style:normal;font-size:12.5px;color:rgba(255,255,255,.6);margin-top:3px;line-height:1.3}
+.chip-a{flex-direction:column;align-items:flex-start;gap:5px;max-width:228px;top:3%;left:-15%;animation-delay:0s}
+.chip-a .chip-stars{color:var(--accent);font-size:12px;letter-spacing:2px}
+.chip-a .chip-quote{font-size:13.5px;line-height:1.4;font-weight:500}
+.chip-a .chip-meta{font-size:12px;color:rgba(255,255,255,.55)}
+.chip-b{bottom:15%;left:-13%;animation-delay:-2s}
+.chip-c{bottom:-3%;right:-3%;animation-delay:-4s}
+@keyframes chipFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+
+.hero-stats{display:flex;margin-top:64px;border-top:1px solid rgba(255,255,255,.1);padding-top:32px;position:relative;z-index:2}
+.hero-stat{flex:1;text-align:center;padding:0 22px;border-left:1px solid rgba(255,255,255,.08)}
+.hero-stat:first-child{border-left:0}
+.hero-stat strong{display:block;font-family:'Fraunces',serif;font-size:clamp(30px,3.6vw,44px);color:var(--accent);line-height:1;font-weight:500;margin-bottom:8px}
+.hero-stat span{font-size:14px;color:rgba(255,255,255,.6);line-height:1.4}
+
+@media(max-width:1100px){.hero-chip{display:none}}
+@media(max-width:640px){
+  .hero-stats{flex-direction:column;margin-top:44px;padding-top:0;border-top:0}
+  .hero-stat{flex:none;border-left:0;border-top:1px solid rgba(255,255,255,.1);padding:20px 0}
+  .hero-stat strong{font-size:32px;margin-bottom:4px}
+}
