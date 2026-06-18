@@ -293,3 +293,37 @@ function payP24() {
     }, 300);
   }, 3200);
 })();
+
+/* --- Zgoda na cookies + bramka na osadzony Spotify --- */
+const COOKIE_KEY = "cze_cookie_consent";
+function enableConsentEmbeds() {
+  document.querySelectorAll(".consent-embed[data-src]").forEach((el) => {
+    if (!el.getAttribute("src")) el.setAttribute("src", el.getAttribute("data-src"));
+  });
+  document.querySelectorAll("[data-embed-placeholder]").forEach((el) => { el.style.display = "none"; });
+}
+function setCookieConsent(value) {
+  try { localStorage.setItem(COOKIE_KEY, value); } catch (e) {}
+  const bar = document.getElementById("cookieBar");
+  if (bar) bar.remove();
+  if (value === "all") enableConsentEmbeds();
+}
+function acceptCookies(all) { setCookieConsent(all ? "all" : "essential"); }
+function initCookies() {
+  let consent = null;
+  try { consent = localStorage.getItem(COOKIE_KEY); } catch (e) {}
+  if (consent === "all") { enableConsentEmbeds(); return; }
+  if (consent === "essential") return;
+  const bar = document.createElement("div");
+  bar.id = "cookieBar";
+  bar.className = "cookie-bar";
+  bar.innerHTML =
+    '<p class="cookie-text">Używamy plików cookie, aby strona działała poprawnie i aby można było odtworzyć osadzone treści (np. podcast Spotify). Szczegóły w <a href="index.html#disclaimer">informacji na dole strony</a>.</p>' +
+    '<div class="cookie-actions">' +
+    '<button type="button" class="cookie-btn cookie-essential" onclick="acceptCookies(false)">Tylko niezbędne</button>' +
+    '<button type="button" class="cookie-btn cookie-accept" onclick="acceptCookies(true)">Akceptuję wszystkie</button>' +
+    '</div>';
+  document.body.appendChild(bar);
+}
+if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", initCookies);
+else initCookies();
