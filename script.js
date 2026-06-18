@@ -215,7 +215,6 @@ function payP24() {
 
   const kbGrid = document.getElementById("kb-grid");
   if (kbGrid) {
-    const items = read(KB_KEY, KB_DEFAULTS);
     const linkKind = (u) => {
       u = (u || "").toLowerCase();
       if (/youtube\.com|youtu\.be|vimeo\.com|wistia/.test(u)) return "video";
@@ -240,24 +239,39 @@ function payP24() {
       }
       return `<span class="kb-soon">Dostępne wkrótce</span>`;
     };
-    kbGrid.innerHTML = items.length
-      ? items.map((it) =>
-          `<article class="kb-card reveal revealed"><span class="kb-tag">${esc(it.tag || "Materiał")}</span><h3>${esc(it.title)}</h3><p>${esc(it.desc || "")}</p>${action(it)}</article>`
-        ).join("")
-      : `<p class="kb-empty" style="grid-column:1/-1">Brak materiałów. Wkrótce dodamy nowe.</p>`;
+    const renderKb = (items) => {
+      kbGrid.innerHTML = items.length
+        ? items.map((it) =>
+            `<article class="kb-card reveal revealed"><span class="kb-tag">${esc(it.tag || "Materiał")}</span><h3>${esc(it.title)}</h3><p>${esc(it.desc || "")}</p>${action(it)}</article>`
+          ).join("")
+        : `<p class="kb-empty" style="grid-column:1/-1">Brak materiałów. Wkrótce dodamy nowe.</p>`;
+    };
+    const kbFromApi = (it) => ({ tag: it.tag, title: it.title, desc: it.desc, link: it.link || "", file: it.fileUrl ? API_BASE + it.fileUrl : "", fileName: it.fileName || "" });
+    renderKb(read(KB_KEY, KB_DEFAULTS)); // natychmiast: dane lokalne (fallback)
+    fetch(`${API_BASE}/api/kb`)
+      .then((r) => (r.ok ? r.json() : Promise.reject()))
+      .then((data) => { if (Array.isArray(data)) renderKb(data.map(kbFromApi)); }) // nadpisz danymi z API
+      .catch(() => {}); // brak API -> zostają dane lokalne
   }
 
   const shopGrid = document.getElementById("shop-grid");
   if (shopGrid) {
-    const items = read(SHOP_KEY, SHOP_DEFAULTS);
-    shopGrid.innerHTML = items.length
-      ? items.map((it) => {
-          const media = it.img
-            ? `<div class="product-media" style="background:#0c1220"><img src="${esc(it.img)}" alt="${esc(it.title)}" style="width:100%;height:100%;object-fit:cover"></div>`
-            : `<div class="product-media"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 5a2 2 0 012-2h11a1 1 0 011 1v15a1 1 0 01-1 1H6a2 2 0 01-2-2V5z"/><path d="M4 19a2 2 0 012-2h12"/></svg></div>`;
-          return `<article class="product-card reveal revealed">${media}<div class="product-body"><span class="product-tag">${esc(it.tag || "Produkt")}</span><h3>${esc(it.title)}</h3><p>${esc(it.desc || "")}</p><div class="product-foot"><span class="product-price">${esc(it.price || "")}</span><button class="cta-primary" onclick="buyProduct(this)">Kup</button></div></div></article>`;
-        }).join("")
-      : `<p class="kb-empty" style="grid-column:1/-1">Brak produktów. Wkrótce dodamy nowe.</p>`;
+    const renderShop = (items) => {
+      shopGrid.innerHTML = items.length
+        ? items.map((it) => {
+            const media = it.img
+              ? `<div class="product-media" style="background:#0c1220"><img src="${esc(it.img)}" alt="${esc(it.title)}" style="width:100%;height:100%;object-fit:cover"></div>`
+              : `<div class="product-media"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 5a2 2 0 012-2h11a1 1 0 011 1v15a1 1 0 01-1 1H6a2 2 0 01-2-2V5z"/><path d="M4 19a2 2 0 012-2h12"/></svg></div>`;
+            return `<article class="product-card reveal revealed">${media}<div class="product-body"><span class="product-tag">${esc(it.tag || "Produkt")}</span><h3>${esc(it.title)}</h3><p>${esc(it.desc || "")}</p><div class="product-foot"><span class="product-price">${esc(it.price || "")}</span><button class="cta-primary" onclick="buyProduct(this)">Kup</button></div></div></article>`;
+          }).join("")
+        : `<p class="kb-empty" style="grid-column:1/-1">Brak produktów. Wkrótce dodamy nowe.</p>`;
+    };
+    const productFromApi = (it) => ({ tag: it.tag, title: it.title, desc: it.desc, price: it.price, img: it.img ? API_BASE + it.img : "" });
+    renderShop(read(SHOP_KEY, SHOP_DEFAULTS)); // natychmiast: dane lokalne (fallback)
+    fetch(`${API_BASE}/api/products`)
+      .then((r) => (r.ok ? r.json() : Promise.reject()))
+      .then((data) => { if (Array.isArray(data)) renderShop(data.map(productFromApi)); }) // nadpisz danymi z API
+      .catch(() => {}); // brak API -> zostają dane lokalne
   }
 })();
 
