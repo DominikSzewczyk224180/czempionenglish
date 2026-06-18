@@ -260,7 +260,7 @@ a:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid var(-
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}.reveal{opacity:1;transform:none}.fade-up{opacity:1;transform:none;animation:none}}
 
 /* ---------- Łamanie tekstu ---------- */
-p,li,span{overflow-wrap:break-word;-webkit-hyphens:auto;hyphens:auto}
+p,li,span{overflow-wrap:break-word;-webkit-hyphens:manual;hyphens:manual;text-wrap:pretty}
 h1,h2,h3,h4{overflow-wrap:break-word;-webkit-hyphens:none;hyphens:none;text-wrap:balance}
 
 /* ---------- Telefony ---------- */
