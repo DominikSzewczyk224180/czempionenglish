@@ -21,12 +21,15 @@
 <!-- Logowanie -->
 <div id="loginView" class="admin-login">
   <h1>Panel administracyjny</h1>
-  <p>Wersja demonstracyjna. Hasło: 12345.</p>
+  <p>Zaloguj się, aby zarządzać treścią strony.</p>
   <div class="admin-field">
-    <input id="pw" class="admin-input" type="password" placeholder="Hasło" onkeydown="if(event.key==='Enter')adminLogin()">
+    <input id="email" class="admin-input" type="email" placeholder="E-mail" autocomplete="username" onkeydown="if(event.key==='Enter')adminLogin()">
+  </div>
+  <div class="admin-field">
+    <input id="pw" class="admin-input" type="password" placeholder="Hasło" autocomplete="current-password" onkeydown="if(event.key==='Enter')adminLogin()">
   </div>
   <button class="cta-primary full" onclick="adminLogin()">Zaloguj</button>
-  <p id="loginErr" style="color:var(--danger);font-size:13px;margin-top:12px;display:none">Błędne hasło.</p>
+  <p id="loginErr" style="color:var(--danger);font-size:13px;margin-top:12px;display:none">Błędny e-mail lub hasło.</p>
 </div>
 
 <!-- Panel -->
@@ -92,250 +95,185 @@
     </div>
   </section>
 
-  <p class="admin-note">Treści startowe są już wczytane. Dane zapisują się lokalnie w tej przeglądarce (wersja demonstracyjna) i pojawiają się na stronach Baza wiedzy oraz Sklep. Docelowo trzyma je backend, a logowanie będzie prawdziwe.</p>
+  <p class="admin-note">Zmiany zapisują się na serwerze i od razu pojawiają się na stronach Baza wiedzy oraz Sklep.</p>
 </div>
 
 <script>
-  const KB_KEY = "cze_kb";
-  const SHOP_KEY = "cze_shop";
-  const SEED_FLAG = "cze_seeded";
-  const SEED_VERSION = "2";
-  let editKb = null;
-  let editShop = null;
-  let pImgData = "";
-  let kbFileData = "";
-  let kbFileName = "";
+const API_BASE = "https://api.czempionenglish.pl";
+const TOKEN_KEY = "cze_admin_token";
+let kbItems = [], pItems = [];
+let kbEditId = null, kbFile = null, kbRemoveFile = false;
+let pEditId = null, pImgFile = null;
 
-  /* Treści startowe (te same co na stronie) */
-  const PDF_DEMO = "data:application/pdf;base64,JVBERi0xLjQKMSAwIG9iago8PCAvVHlwZSAvQ2F0YWxvZyAvUGFnZXMgMiAwIFIgPj4KZW5kb2JqCjIgMCBvYmoKPDwgL1R5cGUgL1BhZ2VzIC9LaWRzIFszIDAgUl0gL0NvdW50IDEgPj4KZW5kb2JqCjMgMCBvYmoKPDwgL1R5cGUgL1BhZ2UgL1BhcmVudCAyIDAgUiAvTWVkaWFCb3ggWzAgMCA1OTUgODQyXSAvUmVzb3VyY2VzIDw8IC9Gb250IDw8IC9GMSA0IDAgUiA+PiA+PiAvQ29udGVudHMgNSAwIFIgPj4KZW5kb2JqCjQgMCBvYmoKPDwgL1R5cGUgL0ZvbnQgL1N1YnR5cGUgL1R5cGUxIC9CYXNlRm9udCAvSGVsdmV0aWNhID4+CmVuZG9iago1IDAgb2JqCjw8IC9MZW5ndGggMTcyID4+CnN0cmVhbQpCVCAvRjEgMjIgVGYgNzAgNzYwIFRkIChDemVtcGlvbiBFbmdsaXNoKSBUaiAwIC0zMCBUZCAvRjEgMTMgVGYgKE1hdGVyaWFsIHByenlrbGFkb3d5IC0gd2Vyc2phIGRlbW9uc3RyYWN5am5hKSBUaiAwIC0yMiBUZCAoVHUgem5hamR6aWUgc2llIHdsYXNjaXdhIHRyZXNjIG1hdGVyaWFsdS4pIFRqIEVUCmVuZHN0cmVhbQplbmRvYmoKeHJlZgowIDYKMDAwMDAwMDAwMCA2NTUzNSBmIAowMDAwMDAwMDA5IDAwMDAwIG4gCjAwMDAwMDAwNTggMDAwMDAgbiAKMDAwMDAwMDExNSAwMDAwMCBuIAowMDAwMDAwMjQxIDAwMDAwIG4gCjAwMDAwMDAzMTEgMDAwMDAgbiAKdHJhaWxlcgo8PCAvU2l6ZSA2IC9Sb290IDEgMCBSID4+CnN0YXJ0eHJlZgo1MzQKJSVFT0Y=";
-  const VIDEO_DEMO = "https://www.youtube.com/results?search_query=angielski+czasy+bez+wkuwania";
-  const AUDIO_DEMO = "https://open.spotify.com/episode/2Nm1fC2tRG270K0Gdw5Csy";
-  const KB_DEFAULTS = [
-    { tag: "PDF", title: "5 powodów, dlaczego Twój angielski stoi w miejscu", desc: "Krótki przewodnik, który pokazuje, co naprawdę blokuje Twoje postępy i jak to odblokować.", file: PDF_DEMO, fileName: "5-powodow.pdf", link: "" },
-    { tag: "Wideo", title: "Czasy w angielskim bez wkuwania", desc: "Mini-lekcja, w której tłumaczymy logikę czasów. Raz zrozumiesz, na zawsze zapamiętasz.", file: "", fileName: "", link: VIDEO_DEMO },
-    { tag: "Ćwiczenia", title: "50 zdań na spotkanie po angielsku", desc: "Zestaw gotowych zwrotów do wydrukowania. Idealny przed ważnym callem albo prezentacją.", file: PDF_DEMO, fileName: "50-zdan.pdf", link: "" },
-    { tag: "Audio", title: "Wymowa: dźwięki, których nie ma w polskim", desc: "Nagranie z ćwiczeniami wymowy. Posłuchaj i powtarzaj, aż zabrzmi naturalnie.", file: "", fileName: "", link: AUDIO_DEMO },
-    { tag: "PDF", title: "Phrasal verbs, których używasz w pracy", desc: "Lista najważniejszych czasowników frazowych z przykładami z prawdziwego życia, nie z podręcznika.", file: PDF_DEMO, fileName: "phrasal-verbs.pdf", link: "" },
-    { tag: "Wideo", title: "Jak myśleć po angielsku, zamiast tłumaczyć", desc: "Pokazujemy konkretny nawyk, który sprawia, że przestajesz układać zdania w głowie po polsku.", file: "", fileName: "", link: VIDEO_DEMO }
-  ];
-  const SHOP_DEFAULTS = [
-    { tag: "E-book", title: "Gramatyka, która ma sens", desc: "Cały system angielskiej gramatyki wytłumaczony przez logikę, a nie przez suche tabelki. 80 stron konkretów, przykłady z życia i ćwiczenia, które naprawdę zostają w głowie.", price: "49 zł", img: "" },
-    { tag: "Kurs wideo", title: "Mów płynnie: 10 lekcji wideo", desc: "Dziesięć nagrań wideo, które krok po kroku przeprowadzą Cię od blokady do swobodnej rozmowy. Oglądasz we własnym tempie i wracasz, kiedy tylko chcesz.", price: "199 zł", img: "" },
-    { tag: "Pakiet", title: "E-book + kurs wideo", desc: "E-book i kurs wideo w jednym pakiecie, taniej niż osobno. Najlepszy start, jeśli chcesz ogarnąć angielski kompleksowo i z gotowym planem.", price: "219 zł", img: "" }
-  ];
+const $ = (id) => document.getElementById(id);
+const esc = (s) => String(s == null ? "" : s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+const cut = (s, n) => { s = String(s || ""); return s.length > n ? s.slice(0, n - 1) + "…" : s; };
+const plural = (n, a, b, c) => { n = Number(n); if (n === 1) return a; const t = n % 10, h = n % 100; return (t >= 2 && t <= 4 && !(h >= 12 && h <= 14)) ? b : c; };
 
-  const S = {
-    read: (k, def) => { try { const r = localStorage.getItem(k); return r === null ? (def || []) : JSON.parse(r); } catch (e) { return def || []; } },
-    write: (k, a) => {
-      try { localStorage.setItem(k, JSON.stringify(a)); return true; }
-      catch (e) {
-        const quota = e && (e.name === "QuotaExceededError" || e.code === 22 || e.code === 1014);
-        alert(quota
-          ? "Pamięć przeglądarki jest pełna (wersja demonstracyjna). Usuń część wgranych plików albo użyj linków zamiast wgrywania. Pełne wgrywanie bez limitu ruszy z backendem."
-          : "Ta przeglądarka blokuje zapis lokalny w tym podglądzie. Na wgranej stronie (serwer lub GitHub Pages) zadziała.");
-        return false;
-      }
-    }
-  };
-  const esc = (s) => String(s == null ? "" : s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
-  const val = (id) => document.getElementById(id).value.trim();
-  const set = (id, v) => (document.getElementById(id).value = v == null ? "" : v);
-  const show = (id, on) => (document.getElementById(id).style.display = on ? "block" : "none");
-  const cut = (s, n) => (s && s.length > n ? s.slice(0, n) + "…" : (s || ""));
-  const plural = (n, one, few, many) => {
-    const m10 = n % 10, m100 = n % 100;
-    if (n === 1) return one;
-    if (m10 >= 2 && m10 <= 4 && !(m100 >= 12 && m100 <= 14)) return few;
-    return many;
-  };
+function token() { try { return localStorage.getItem(TOKEN_KEY) || ""; } catch (e) { return ""; } }
+function setToken(t) { try { t ? localStorage.setItem(TOKEN_KEY, t) : localStorage.removeItem(TOKEN_KEY); } catch (e) {} }
 
-  /* jednorazowe wgranie treści startowych */
+async function api(path, opts = {}) {
+  const headers = Object.assign({}, opts.headers || {});
+  const t = token();
+  if (t) headers["Authorization"] = "Bearer " + t;
+  if (opts.json !== undefined) { headers["Content-Type"] = "application/json"; opts.body = JSON.stringify(opts.json); delete opts.json; }
+  const r = await fetch(API_BASE + path, Object.assign({}, opts, { headers }));
+  if (r.status === 401) { setToken(""); showLogin(); throw new Error("Sesja wygasła. Zaloguj się ponownie."); }
+  if (!r.ok) { let m = "Błąd serwera"; try { const j = await r.json(); m = j.error || m; } catch (e) {} throw new Error(m); }
+  if (r.status === 204) return null;
+  try { return await r.json(); } catch (e) { return null; }
+}
+
+function showLogin() { $("loginView").style.display = ""; $("panelView").style.display = "none"; $("logoutBtn").style.display = "none"; }
+function showPanel() { $("loginView").style.display = "none"; $("panelView").style.display = ""; $("logoutBtn").style.display = ""; }
+
+async function adminLogin() {
+  const email = $("email").value.trim(), password = $("pw").value;
+  $("loginErr").style.display = "none";
   try {
-    if (localStorage.getItem(SEED_FLAG) !== SEED_VERSION) {
-      localStorage.setItem(KB_KEY, JSON.stringify(KB_DEFAULTS));
-      localStorage.setItem(SHOP_KEY, JSON.stringify(SHOP_DEFAULTS));
-      localStorage.setItem(SEED_FLAG, SEED_VERSION);
-    }
+    const r = await fetch(API_BASE + "/api/admin/login", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ email, password }) });
+    if (!r.ok) throw new Error("bad");
+    const d = await r.json();
+    setToken(d.token);
+    $("pw").value = "";
+    showPanel();
+    loadAll();
+  } catch (e) { $("loginErr").style.display = "block"; }
+}
+function adminLogout() { setToken(""); showLogin(); }
+
+async function loadAll() {
+  try {
+    kbItems = await api("/api/admin/kb"); renderKb();
+    pItems = await api("/api/admin/products"); renderProducts();
   } catch (e) {}
+}
 
-  /* zdjęcie produktu: wgrywanie pliku (zmniejszane, zapisywane razem z produktem) */
-  function onImgPick(e) {
-    const file = e.target.files && e.target.files[0];
-    if (!file) return;
-    const reader = new FileReader();
-    reader.onload = (ev) => {
-      const img = new Image();
-      img.onload = () => {
-        const max = 700;
-        let w = img.width, h = img.height;
-        if (w > max) { h = Math.round(h * max / w); w = max; }
-        const c = document.createElement("canvas");
-        c.width = w; c.height = h;
-        c.getContext("2d").drawImage(img, 0, 0, w, h);
-        pImgData = c.toDataURL("image/jpeg", 0.82);
-        showImgPreview(pImgData);
-      };
-      img.src = ev.target.result;
-    };
-    reader.readAsDataURL(file);
-  }
-  function showImgPreview(src) {
-    document.getElementById("pImgPreviewEl").src = src;
-    document.getElementById("pImgPreview").style.display = "flex";
-  }
-  function clearImg() {
-    pImgData = "";
-    document.getElementById("pImgPreview").style.display = "none";
-    document.getElementById("pImgPreviewEl").removeAttribute("src");
-    const f = document.getElementById("pImgFile"); if (f) f.value = "";
-  }
-
-  /* materiał do bazy wiedzy: wgrywanie pliku (PDF/wideo/audio/itd.) */
-  function onKbFilePick(e) {
-    const file = e.target.files && e.target.files[0];
-    if (!file) return;
-    const MAX = 3 * 1024 * 1024; // ~3 MB - limit pamięci przeglądarki w wersji demonstracyjnej
-    if (file.size > MAX) {
-      alert("Ten plik jest za duży na wersję demonstracyjną (pamięć przeglądarki to kilka MB). Filmy i nagrania audio są zwykle za duże, więc na razie wklej zamiast tego link (np. YouTube albo Dysk Google). Pełne wgrywanie plików bez limitu ruszy z backendem.");
-      e.target.value = "";
-      return;
+/* ---------- BAZA WIEDZY ---------- */
+function renderKb() {
+  $("kbCount").textContent = kbItems.length + " " + plural(kbItems.length, "materiał", "materiały", "materiałów");
+  $("kbList").innerHTML = kbItems.length
+    ? kbItems.map((it) => {
+        const extra = it.fileName ? `<div class="ai-desc">Plik: ${esc(it.fileName)}</div>` : (it.link ? `<div class="ai-desc">Link: ${esc(cut(it.link, 50))}</div>` : "");
+        return `<li class="admin-item"><div><div class="ai-main">${esc(it.title)}</div><div class="ai-sub">${esc(it.tag || "")}</div>${it.desc ? `<div class="ai-desc">${esc(cut(it.desc, 90))}</div>` : ""}${extra}</div><div class="admin-actions"><button class="admin-edit" onclick="editKb(${it.id})">Edytuj</button><button class="admin-del" onclick="delKb(${it.id})">Usuń</button></div></li>`;
+      }).join("")
+    : '<li class="admin-empty">Brak materiałów. Dodaj pierwszy po lewej.</li>';
+}
+function onKbFilePick(e) {
+  const f = e.target.files[0]; if (!f) return;
+  kbFile = f; kbRemoveFile = false;
+  $("kbFileName").textContent = f.name; $("kbFileInfo").style.display = "";
+}
+function clearKbFile() {
+  kbFile = null; kbRemoveFile = true;
+  $("kbFile").value = ""; $("kbFileName").textContent = ""; $("kbFileInfo").style.display = "none";
+}
+async function saveKb() {
+  const title = $("kbTitle").value.trim();
+  if (!title) { alert("Podaj tytuł materiału."); return; }
+  const body = { title, desc: $("kbDesc").value.trim(), tag: $("kbTag").value, link: $("kbLink").value.trim() };
+  const btn = $("kbSubmit"); btn.disabled = true;
+  try {
+    const item = kbEditId
+      ? await api("/api/admin/kb/" + kbEditId, { method: "PUT", json: body })
+      : await api("/api/admin/kb", { method: "POST", json: body });
+    if (kbFile) {
+      const fd = new FormData(); fd.append("file", kbFile);
+      await api("/api/admin/kb/" + item.id + "/file", { method: "POST", body: fd });
+    } else if (kbEditId && kbRemoveFile) {
+      await api("/api/admin/kb/" + item.id + "/file", { method: "DELETE" });
     }
-    const reader = new FileReader();
-    reader.onload = (ev) => {
-      kbFileData = ev.target.result;
-      kbFileName = file.name;
-      document.getElementById("kbFileName").textContent = file.name;
-      document.getElementById("kbFileInfo").style.display = "flex";
-    };
-    reader.readAsDataURL(file);
-  }
-  function clearKbFile() {
-    kbFileData = ""; kbFileName = "";
-    document.getElementById("kbFileInfo").style.display = "none";
-    const f = document.getElementById("kbFile"); if (f) f.value = "";
-  }
+    cancelKb(); await loadAll();
+  } catch (e) { alert(e.message); } finally { btn.disabled = false; }
+}
+function editKb(id) {
+  const it = kbItems.find((x) => x.id === id); if (!it) return;
+  kbEditId = id; kbFile = null; kbRemoveFile = false;
+  $("kbTitle").value = it.title || ""; $("kbDesc").value = it.desc || ""; $("kbTag").value = it.tag || "Inne"; $("kbLink").value = it.link || "";
+  $("kbFile").value = "";
+  if (it.fileName) { $("kbFileName").textContent = it.fileName; $("kbFileInfo").style.display = ""; }
+  else { $("kbFileInfo").style.display = "none"; }
+  $("kbFormLabel").style.display = "none"; $("kbEditNote").style.display = "block";
+  $("kbSubmit").textContent = "Zapisz zmiany"; $("kbCancel").style.display = "";
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+function cancelKb() {
+  kbEditId = null; kbFile = null; kbRemoveFile = false;
+  $("kbTitle").value = ""; $("kbDesc").value = ""; $("kbTag").value = "PDF"; $("kbLink").value = ""; $("kbFile").value = "";
+  $("kbFileInfo").style.display = "none"; $("kbFileName").textContent = "";
+  $("kbFormLabel").style.display = "block"; $("kbEditNote").style.display = "none";
+  $("kbSubmit").textContent = "Dodaj materiał"; $("kbCancel").style.display = "none";
+}
+async function delKb(id) {
+  if (!confirm("Usunąć ten materiał?")) return;
+  try { await api("/api/admin/kb/" + id, { method: "DELETE" }); await loadAll(); } catch (e) { alert(e.message); }
+}
 
-  /* logowanie */
-  function adminLogin() {
-    if (document.getElementById("pw").value === "12345") {
-      try { localStorage.setItem("cze_admin", "1"); } catch (e) {}
-      showPanel();
-    } else {
-      document.getElementById("loginErr").style.display = "block";
+/* ---------- SKLEP ---------- */
+function renderProducts() {
+  $("pCount").textContent = pItems.length + " " + plural(pItems.length, "produkt", "produkty", "produktów");
+  $("pList").innerHTML = pItems.length
+    ? pItems.map((it) => {
+        const extra = it.img ? `<div class="ai-desc">Zdjęcie: tak</div>` : "";
+        return `<li class="admin-item"><div><div class="ai-main">${esc(it.title)}</div><div class="ai-sub">${esc(it.tag || "")}${it.price ? " · " + esc(it.price) : ""}</div>${it.desc ? `<div class="ai-desc">${esc(cut(it.desc, 90))}</div>` : ""}${extra}</div><div class="admin-actions"><button class="admin-edit" onclick="editProduct(${it.id})">Edytuj</button><button class="admin-del" onclick="delProduct(${it.id})">Usuń</button></div></li>`;
+      }).join("")
+    : '<li class="admin-empty">Brak produktów. Dodaj pierwszy po lewej.</li>';
+}
+function onImgPick(e) {
+  const f = e.target.files[0]; if (!f) return;
+  pImgFile = f;
+  $("pImgPreviewEl").src = URL.createObjectURL(f); $("pImgPreview").style.display = "";
+}
+function clearImg() {
+  pImgFile = null;
+  $("pImgFile").value = ""; $("pImgPreview").style.display = "none";
+}
+async function saveProduct() {
+  const title = $("pTitle").value.trim();
+  if (!title) { alert("Podaj tytuł produktu."); return; }
+  const body = { title, desc: $("pDesc").value.trim(), price: $("pPrice").value.trim(), tag: $("pTag").value.trim() };
+  const btn = $("pSubmit"); btn.disabled = true;
+  try {
+    const item = pEditId
+      ? await api("/api/admin/products/" + pEditId, { method: "PUT", json: body })
+      : await api("/api/admin/products", { method: "POST", json: body });
+    if (pImgFile) {
+      const fd = new FormData(); fd.append("image", pImgFile);
+      await api("/api/admin/products/" + item.id + "/image", { method: "POST", body: fd });
     }
-  }
-  function adminLogout() {
-    try { localStorage.removeItem("cze_admin"); } catch (e) {}
-    location.reload();
-  }
-  function showPanel() {
-    document.getElementById("loginView").style.display = "none";
-    document.getElementById("panelView").style.display = "block";
-    document.getElementById("logoutBtn").style.display = "inline-block";
-    renderKb();
-    renderProducts();
-  }
+    cancelProduct(); await loadAll();
+  } catch (e) { alert(e.message); } finally { btn.disabled = false; }
+}
+function editProduct(id) {
+  const it = pItems.find((x) => x.id === id); if (!it) return;
+  pEditId = id; pImgFile = null;
+  $("pTitle").value = it.title || ""; $("pDesc").value = it.desc || ""; $("pPrice").value = it.price || ""; $("pTag").value = it.tag || "";
+  $("pImgFile").value = "";
+  if (it.img) { $("pImgPreviewEl").src = API_BASE + it.img; $("pImgPreview").style.display = ""; }
+  else { $("pImgPreview").style.display = "none"; }
+  $("pFormLabel").style.display = "none"; $("pEditNote").style.display = "block";
+  $("pSubmit").textContent = "Zapisz zmiany"; $("pCancel").style.display = "";
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+function cancelProduct() {
+  pEditId = null; pImgFile = null;
+  $("pTitle").value = ""; $("pDesc").value = ""; $("pPrice").value = ""; $("pTag").value = ""; $("pImgFile").value = "";
+  $("pImgPreview").style.display = "none";
+  $("pFormLabel").style.display = "block"; $("pEditNote").style.display = "none";
+  $("pSubmit").textContent = "Dodaj produkt"; $("pCancel").style.display = "none";
+}
+async function delProduct(id) {
+  if (!confirm("Usunąć ten produkt?")) return;
+  try { await api("/api/admin/products/" + id, { method: "DELETE" }); await loadAll(); } catch (e) { alert(e.message); }
+}
 
-  /* BAZA WIEDZY */
-  function saveKb() {
-    const title = val("kbTitle");
-    if (!title) { document.getElementById("kbTitle").focus(); return; }
-    const item = { title, desc: val("kbDesc"), tag: document.getElementById("kbTag").value, file: kbFileData, fileName: kbFileName, link: val("kbLink") };
-    const arr = S.read(KB_KEY, KB_DEFAULTS);
-    if (editKb === null) arr.push(item); else arr[editKb] = item;
-    S.write(KB_KEY, arr);
-    cancelKb();
-    renderKb();
-  }
-  function editKbItem(i) {
-    const it = S.read(KB_KEY, KB_DEFAULTS)[i]; if (!it) return;
-    editKb = i;
-    set("kbTitle", it.title); set("kbDesc", it.desc); set("kbLink", it.link);
-    document.getElementById("kbTag").value = it.tag || "PDF";
-    kbFileData = it.file || ""; kbFileName = it.fileName || "";
-    document.getElementById("kbFile").value = "";
-    if (kbFileData) { document.getElementById("kbFileName").textContent = kbFileName || "Wgrany plik"; document.getElementById("kbFileInfo").style.display = "flex"; }
-    else document.getElementById("kbFileInfo").style.display = "none";
-    document.getElementById("kbSubmit").textContent = "Zapisz zmiany";
-    document.getElementById("kbFormLabel").textContent = "Edytuj materiał";
-    document.getElementById("kbEditNote").style.display = "flex";
-    show("kbCancel", true);
-    document.getElementById("kbTitle").focus();
-  }
-  function cancelKb() {
-    editKb = null;
-    set("kbTitle", ""); set("kbDesc", ""); set("kbLink", "");
-    document.getElementById("kbTag").value = "PDF";
-    clearKbFile();
-    document.getElementById("kbSubmit").textContent = "Dodaj materiał";
-    document.getElementById("kbFormLabel").textContent = "Dodaj materiał";
-    document.getElementById("kbEditNote").style.display = "none";
-    show("kbCancel", false);
-  }
-  function delKb(i) {
-    const arr = S.read(KB_KEY, KB_DEFAULTS); arr.splice(i, 1); S.write(KB_KEY, arr);
-    if (editKb === i) cancelKb();
-    renderKb();
-  }
-  function renderKb() {
-    const arr = S.read(KB_KEY, KB_DEFAULTS);
-    document.getElementById("kbCount").textContent = arr.length + " " + plural(arr.length, "materiał", "materiały", "materiałów");
-    document.getElementById("kbList").innerHTML = arr.length
-      ? arr.map((it, i) =>
-          `<li class="admin-item"><div><div class="ai-main">${esc(it.title)}</div><div class="ai-sub">${esc(it.tag || "")}</div>${it.desc ? `<div class="ai-desc">${esc(cut(it.desc, 90))}</div>` : ""}</div><div class="admin-actions"><button class="admin-edit" onclick="editKbItem(${i})">Edytuj</button><button class="admin-del" onclick="delKb(${i})">Usuń</button></div></li>`
-        ).join("")
-      : '<li class="admin-empty">Brak materiałów. Dodaj pierwszy po lewej.</li>';
-  }
-
-  /* SKLEP */
-  function saveProduct() {
-    const title = val("pTitle");
-    if (!title) { document.getElementById("pTitle").focus(); return; }
-    const item = { title, desc: val("pDesc"), price: val("pPrice"), tag: val("pTag"), img: pImgData };
-    const arr = S.read(SHOP_KEY, SHOP_DEFAULTS);
-    if (editShop === null) arr.push(item); else arr[editShop] = item;
-    S.write(SHOP_KEY, arr);
-    cancelProduct();
-    renderProducts();
-  }
-  function editProductItem(i) {
-    const it = S.read(SHOP_KEY, SHOP_DEFAULTS)[i]; if (!it) return;
-    editShop = i;
-    set("pTitle", it.title); set("pDesc", it.desc); set("pPrice", it.price); set("pTag", it.tag);
-    pImgData = it.img || "";
-    document.getElementById("pImgFile").value = "";
-    if (pImgData) showImgPreview(pImgData); else document.getElementById("pImgPreview").style.display = "none";
-    document.getElementById("pSubmit").textContent = "Zapisz zmiany";
-    document.getElementById("pFormLabel").textContent = "Edytuj produkt";
-    document.getElementById("pEditNote").style.display = "flex";
-    show("pCancel", true);
-    document.getElementById("pTitle").focus();
-  }
-  function cancelProduct() {
-    editShop = null;
-    set("pTitle", ""); set("pDesc", ""); set("pPrice", ""); set("pTag", "");
-    clearImg();
-    document.getElementById("pSubmit").textContent = "Dodaj produkt";
-    document.getElementById("pFormLabel").textContent = "Dodaj produkt";
-    document.getElementById("pEditNote").style.display = "none";
-    show("pCancel", false);
-  }
-  function delProduct(i) {
-    const arr = S.read(SHOP_KEY, SHOP_DEFAULTS); arr.splice(i, 1); S.write(SHOP_KEY, arr);
-    if (editShop === i) cancelProduct();
-    renderProducts();
-  }
-  function renderProducts() {
-    const arr = S.read(SHOP_KEY, SHOP_DEFAULTS);
-    document.getElementById("pCount").textContent = arr.length + " " + plural(arr.length, "produkt", "produkty", "produktów");
-    document.getElementById("pList").innerHTML = arr.length
-      ? arr.map((it, i) =>
-          `<li class="admin-item"><div><div class="ai-main">${esc(it.title)}</div><div class="ai-sub">${esc(it.tag || "")}${it.price ? " · " + esc(it.price) : ""}</div>${it.desc ? `<div class="ai-desc">${esc(cut(it.desc, 90))}</div>` : ""}</div><div class="admin-actions"><button class="admin-edit" onclick="editProductItem(${i})">Edytuj</button><button class="admin-del" onclick="delProduct(${i})">Usuń</button></div></li>`
-        ).join("")
-      : '<li class="admin-empty">Brak produktów. Dodaj pierwszy po lewej.</li>';
-  }
-
-  try { if (localStorage.getItem("cze_admin") === "1") showPanel(); } catch (e) {}
+/* ---------- start ---------- */
+(async function init() {
+  if (!token()) { showLogin(); return; }
+  try { await api("/api/admin/me"); showPanel(); loadAll(); }
+  catch (e) { showLogin(); }
+})();
 </script>
 </body>
 </html>
