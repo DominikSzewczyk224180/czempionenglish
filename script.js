@@ -58,18 +58,27 @@ function handleLead(form) {
   const payload = {
     name: (form.querySelector('[name="name"]') || {}).value || "",
     email: (form.querySelector('[name="email"]') || {}).value || "",
+    source: "lead-magnet",
   };
-
-  /* TODO: Klaviyo (zapis do listy newslettera + automatyczny mail z przewodnikiem):
-     fetch(`https://a.klaviyo.com/client/subscriptions/?company_id=${KLAVIYO_COMPANY_ID}`, {...});
-     LUB przez backend Flask:
-     fetch(`${API_BASE}/api/lead`, { method:"POST", headers:{"Content-Type":"application/json"}, body: JSON.stringify(payload) }); */
-
   const card = form.closest("[data-lead]");
-  if (card) {
-    card.querySelector(".lead-form-wrap").style.display = "none";
-    card.querySelector(".lead-success").style.display = "block";
-  }
+  const btn = form.querySelector('button[type="submit"]');
+  if (btn) { btn.disabled = true; btn.dataset.label = btn.textContent; btn.textContent = "Zapisuję..."; }
+  fetch(`${API_BASE}/api/subscribe`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload),
+  })
+    .then((r) => (r.ok ? r.json() : Promise.reject(r)))
+    .then(() => {
+      if (card) {
+        card.querySelector(".lead-form-wrap").style.display = "none";
+        card.querySelector(".lead-success").style.display = "block";
+      }
+    })
+    .catch(() => {
+      if (btn) { btn.disabled = false; btn.textContent = btn.dataset.label || "Zapisz się i pobierz przewodnik"; }
+      alert("Nie udało się zapisać. Sprawdź połączenie i spróbuj ponownie.");
+    });
   return false;
 }
 
